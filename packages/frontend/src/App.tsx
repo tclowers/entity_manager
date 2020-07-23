@@ -3,12 +3,14 @@ import logo from './logo.svg';
 import './App.css';
 
 function App() {
+  let a: number = 0;
+  a = "sandwich";
   return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
-          Edit <code>src/App.js</code> then save and reload.
+          Edit <code>src/App.tsx</code> and then save to reload.
         </p>
         <a
           className="App-link"
