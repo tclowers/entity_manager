@@ -12,7 +12,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@graphql-modules/core": "^0.7.17",
+    "@graphql-modules/core": "^0.7.17"
+  },
+  "devDependencies": {
     "concurrently": "^5.2.0"
   }
 }
