@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useQuery } from '@apollo/client';
-import { query } from '../graphql/books';
-import { Book, Props as BookProps } from './book';
-import { Spinner } from './spinner';
+import { query } from '../../graphql/books';
+import { Book, Props as BookProps } from '../molecules/book';
+import { Spinner } from '../atoms/spinner';
 
 const Container = styled.div`
     width: 60%;

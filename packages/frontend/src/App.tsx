@@ -3,7 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import { ApolloProvider } from '@apollo/client';
 import { client } from  './graphql';
-import { BookList } from './components/book-list';
+import { BookList } from './components/organisms/book-list';
 
 function App() {
   return (
