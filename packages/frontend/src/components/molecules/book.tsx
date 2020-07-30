@@ -19,8 +19,8 @@ export interface Props {
 export function Book({ author, title }: Props) {
     return (
         <Container>
-            <Title>{title}</Title>
-            <Author>by {author}</Author>
+            <Title value={title} />
+            <Author value={author} />
         </Container>
     );
 }
