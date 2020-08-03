@@ -1,5 +1,6 @@
+import '/config'; // loading .env file values
 import { ApolloServer } from 'apollo-server';
-import { bookModule } from './modules/book';
+import { bookModule } from '/modules/book';
 
 const server = new ApolloServer({
     modules: [bookModule]

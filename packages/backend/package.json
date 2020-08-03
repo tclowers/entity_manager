@@ -18,18 +18,28 @@
   "license": "ISC",
   "dependencies": {
     "@graphql-modules/core": "^0.7.17",
+    "@types/dotenv-safe": "^8.1.1",
     "apollo-server": "^2.16.0",
+    "db-migrate": "^0.11.11",
+    "db-migrate-pg": "^1.2.2",
+    "dotenv": "^8.2.0",
+    "dotenv-safe": "^8.2.0",
     "graphql": "^15.3.0",
     "graphql-tag": "^2.10.4",
-    "reflect-metadata": "^0.1.13"
+    "path": "^0.12.7",
+    "reflect-metadata": "^0.1.13",
+    "slonik": "^22.4.11"
   },
   "devDependencies": {
     "@babel/cli": "^7.10.5",
     "@babel/core": "^7.10.5",
     "@babel/plugin-proposal-class-properties": "^7.10.4",
+    "@babel/plugin-transform-runtime": "^7.11.0",
     "@babel/preset-env": "^7.10.4",
     "@babel/preset-typescript": "^7.10.4",
+    "@types/slonik": "^22.1.2",
     "babel-plugin-root-import": "^6.5.0",
+    "babel-polyfill": "^6.26.0",
     "typescript": "^3.9.7"
   }
 }
