@@ -6,35 +6,37 @@ import { Book, Props as BookProps } from '../molecules/book';
 import { Spinner } from '../atoms/spinner';
 
 const Container = styled.div`
-    width: 60%;
+  width: 60%;
 `;
 
 const Title = styled.h2`
-    margin-bottom: 0.5em;
+  margin-bottom: 0.5em;
 `;
 
 const List = styled.ul`
-    list-style: none;
+  list-style: none;
 `;
 
 export function BookList() {
-    const { loading, error, data } = useQuery(query);
+  const { loading, error, data } = useQuery(query);
 
-    if (loading) return (<Spinner />);
-    if (error) return (<Container>Error! {error.message}</Container>);
+  if (loading) return <Spinner />;
+  if (error) return <Container>Error! {error.message}</Container>;
 
-    const listItems: React.FC[] = data.books.map(
-        ({ author, title }: BookProps, i: number) => {
-            return (<li key={i}><Book author={author} title={title} key={i} /></li>);
-        }
-    );
+  const listItems: React.FC[] = data.books.map(
+    ({ author, title }: BookProps, i: number) => {
+      return (
+        <li key={i}>
+          <Book author={author} title={title} key={i} />
+        </li>
+      );
+    }
+  );
 
-    return (
-        <Container>
-            <Title>Books:</Title>
-            <List>
-                {listItems}
-            </List>
-        </Container>
-    );
+  return (
+    <Container>
+      <Title>Books:</Title>
+      <List>{listItems}</List>
+    </Container>
+  );
 }

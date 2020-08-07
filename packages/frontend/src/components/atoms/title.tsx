@@ -2,16 +2,14 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Container = styled.div`
-    width: 100%;
-    font-size: 1.1em;
+  width: 100%;
+  font-size: 1.1em;
 `;
 
 interface Props {
-    value: string;
+  value: string;
 }
 
 export function Title({ value }: Props) {
-    return(
-        <Container>{ value }</Container>
-    )
+  return <Container>{value}</Container>;
 }
