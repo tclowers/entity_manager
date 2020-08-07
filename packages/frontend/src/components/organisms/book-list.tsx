@@ -13,6 +13,10 @@ const Title = styled.h2`
     margin-bottom: 0.5em;
 `;
 
+const List = styled.ul`
+    list-style: none;
+`;
+
 export function BookList() {
     const { loading, error, data } = useQuery(query);
 
@@ -20,13 +24,17 @@ export function BookList() {
     if (error) return (<Container>Error! {error.message}</Container>);
 
     const listItems: React.FC[] = data.books.map(
-        ({ author, title }: BookProps, i: number) => <Book author={author} title={title} key={i} />
+        ({ author, title }: BookProps, i: number) => {
+            return (<li key={i}><Book author={author} title={title} key={i} /></li>);
+        }
     );
 
     return (
         <Container>
             <Title>Books:</Title>
-            {listItems}
+            <List>
+                {listItems}
+            </List>
         </Container>
     );
 }
