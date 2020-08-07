@@ -3,7 +3,7 @@ import { render } from '@testing-library/react';
 import { Title } from './title';
 
 test('renders correct title', async () => {
-    const { getByText } = render(<Title value={'Dune'} />);
+  const { getByText } = render(<Title value={'Dune'} />);
 
   // renders the correct title value
   const correctTitle = getByText(/Dune/i);

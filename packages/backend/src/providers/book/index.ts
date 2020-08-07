@@ -2,15 +2,15 @@ import { sql } from 'slonik';
 import { query } from '../database';
 
 export async function list() {
-    const sql_code = sql`
+  const sql_code = sql`
         SELECT
             title,
             author
         FROM books
     `;
-    const results = await query(sql_code);
+  const results = await query(sql_code);
 
-    return results.rows;
+  return results.rows;
 }
 
 /// In the event that database connectivity is not yet setup

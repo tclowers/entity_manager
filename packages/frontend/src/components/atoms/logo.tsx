@@ -11,16 +11,14 @@ const logoSpin = keyframes`
 `;
 
 const LogoImage = styled.img`
-    height: 40vmin;
-    pointer-events: none;
+  height: 40vmin;
+  pointer-events: none;
 
-    @media (prefers-reduced-motion: no-preference) {
-        animation: ${logoSpin} infinite 20s linear;
-    }
+  @media (prefers-reduced-motion: no-preference) {
+    animation: ${logoSpin} infinite 20s linear;
+  }
 `;
 
 export function Logo() {
-    return (
-        <LogoImage src={logo} className="App-logo" alt="logo" />
-    );
+  return <LogoImage src={logo} className="App-logo" alt="logo" />;
 }

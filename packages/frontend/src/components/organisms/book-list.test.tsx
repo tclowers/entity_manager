@@ -13,23 +13,26 @@ const mocks = [
     result: {
       data: {
         books: [
-            { title: 'Harry Potter and the Chamber of Secrets', author: 'J.K. Rowling' },
-            { title: 'Dune', author: 'Frank Herbert' },
-        ]
+          {
+            title: 'Harry Potter and the Chamber of Secrets',
+            author: 'J.K. Rowling',
+          },
+          { title: 'Dune', author: 'Frank Herbert' },
+        ],
       },
     },
   },
 ];
 
 test('renders book list', async () => {
-    const { getByText, getAllByRole } = render(
-        <MockedProvider mocks={mocks} addTypename={false}>
-            <BookList />
-        </MockedProvider>
-    );
+  const { getByText, getAllByRole } = render(
+    <MockedProvider mocks={mocks} addTypename={false}>
+      <BookList />
+    </MockedProvider>
+  );
 
-    let promise = new Promise(resolve => setTimeout(resolve, 0)); // wait for response
-    await act(() => promise);
+  let promise = new Promise((resolve) => setTimeout(resolve, 0)); // wait for response
+  await act(() => promise);
 
   // renders the title for "Books:" list
   const listElement = getByText(/Books:/i);
