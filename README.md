@@ -1,2 +1,2 @@
-# js_stack
-A clean ReactJS, NodeJS, GraphQL full stack TypeScript scaffold for web applications
+# ts_rest_stack
+A clean ReactJS, NodeJS, ExpressJS full stack TypeScript scaffold for web applications

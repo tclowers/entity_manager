@@ -1,7 +1,7 @@
 {
-  "name": "js_stack",
+  "name": "ts_rest_stack",
   "version": "1.0.0",
-  "description": "A clean ReactJS, NodeJS, GraphQL full stack JavaScript scaffold",
+  "description": "A clean ReactJS, NodeJS, ExpressJS full stack TypeScript scaffold",
   "main": "index.js",
   "scripts": {
     "frontend": "cd packages/frontend && npm start",
