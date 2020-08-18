@@ -1,0 +1,4 @@
+# By default eslint ignores dotfiles
+!.eslintrc.js
+!.prettierrc.js
+!.babelrc.js
