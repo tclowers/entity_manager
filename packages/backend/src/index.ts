@@ -1,12 +1,13 @@
 import '/config'; // loading .env file values
-import { ApolloServer } from 'apollo-server';
-import { bookModule } from '/modules/book';
+import express from 'express';
+import { router } from '/routes';
 
-const server = new ApolloServer({
-  modules: [bookModule],
-});
+const app = express()
+const port = 3000
 
-// The `listen` method launches a web server.
-server.listen().then(({ url }) => {
-  console.log(`🚀  Server ready at ${url}`);
-});
+// Use /routes/index.js for routing
+app.use('/', router);
+
+app.listen(port, () => {
+  console.log(`Example app listening at http://localhost:${port}`)
+})

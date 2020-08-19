@@ -1,10 +1,8 @@
-import { GraphQLModule } from '@graphql-modules/core';
-import { resolvers } from './resolvers';
-import { typeDefs } from './type-defs';
+import { Request, Response } from 'express';
+import { list as listBooks } from '/providers/book';
 
-export const bookModule = new GraphQLModule({
-  name: 'BookModule',
-  typeDefs,
-  resolvers,
-  imports: [],
-});
+export const list = async (req: Request, res: Response) => {
+  const books = await listBooks();
+  const payload = JSON.stringify({ books });
+  res.send(payload);
+};
