@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useQuery } from '@apollo/client';
-import { query } from '../../graphql/books';
+import { useBooks } from '../../api/books';
+import { ApiAction } from '../../api/common';
 import { Book, Props as BookProps } from '../molecules/book';
 import { Spinner } from '../atoms/spinner';
 
@@ -18,25 +18,23 @@ const List = styled.ul`
 `;
 
 export function BookList() {
-  const { loading, error, data } = useQuery(query);
+  const { loading, error, data = [] } = useBooks(ApiAction.List);
 
   if (loading) return <Spinner />;
   if (error) return <Container>Error! {error.message}</Container>;
 
-  const listItems: React.FC[] = data.books.map(
-    ({ author, title }: BookProps, i: number) => {
-      return (
-        <li key={i}>
-          <Book author={author} title={title} key={i} />
-        </li>
-      );
-    }
-  );
-
   return (
     <Container>
       <Title>Books:</Title>
-      <List>{listItems}</List>
+      <List>
+        {data.map(({ author, title }: BookProps, i: number) => {
+          return (
+            <li key={i}>
+              <Book author={author} title={title} key={i} />
+            </li>
+          );
+        })}
+      </List>
     </Container>
   );
 }
