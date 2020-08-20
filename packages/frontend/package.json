@@ -19,7 +19,8 @@
     "react-scripts": "^3.4.3",
     "styled-components": "^5.1.1",
     "subscriptions-transport-ws": "^0.9.17",
-    "typescript": "^3.7.5"
+    "typescript": "^3.7.5",
+    "use-http": "^1.0.13"
   },
   "scripts": {
     "start": "react-scripts start",
