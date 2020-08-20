@@ -7,12 +7,12 @@
     "frontend": "cd packages/frontend && npm start",
     "backend": "cd packages/backend && npm start",
     "start": "concurrently \"npm run frontend\" \"npm run backend\"",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test:frontend": "cd packages/frontend && npm run test",
+    "test": "npm run test:frontend"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@graphql-modules/core": "^0.7.17",
     "@types/react-router-dom": "^5.1.5",
     "cors": "^2.8.5"
   },
