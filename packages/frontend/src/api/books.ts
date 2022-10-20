@@ -1,4 +1,4 @@
-import useFetch from 'use-http';
+import useAxios from 'axios-hooks'
 import { apiRoute, ApiAction } from './common';
 
 const getRoute = (action: ApiAction) => {
@@ -13,5 +13,5 @@ const getRoute = (action: ApiAction) => {
 export const useBooks = (action = ApiAction.List) => {
   const options = {};
   const route = getRoute(action);
-  return useFetch(route, options, []);
+  return useAxios(route);
 };

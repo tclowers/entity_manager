@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { useBooks } from '../../api/books';
 import { ApiAction } from '../../api/common';
-import { Book, Props as BookProps } from '../molecules/book';
+import { Field, Props as FieldProps } from '../molecules/field';
 import { Spinner } from '../atoms/spinner';
 
 const Container = styled.div`
@@ -17,20 +17,21 @@ const List = styled.ul`
   list-style: none;
 `;
 
-export function BookList() {
-  const [{ data, loading, error }, refetch] = useBooks(ApiAction.List);
+export function FieldList() {
+//   const { loading, error, data = [] } = useBooks(ApiAction.List);
+  const data = [ {"name": "item"}, {"name": "value"}, {"name": "weight"}]
 
-  if (loading) return <Spinner />;
-  if (error) return <Container>Error! {error.message}</Container>;
+//   if (loading) return <Spinner />;
+//   if (error) return <Container>Error! {error.message}</Container>;
 
   return (
     <Container>
-      <Title>Books:</Title>
+      <Title>Fields:</Title>
       <List>
-        {data.map(({ author, title }: BookProps, i: number) => {
+        {data.map(({ name }: FieldProps, i: number) => {
           return (
             <li key={i}>
-              <Book author={author} title={title} key={i} />
+              <Field name={name} key={i} />
             </li>
           );
         })}
