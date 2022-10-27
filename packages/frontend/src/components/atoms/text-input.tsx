@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useState } from "react";
 
 const Container = styled.input.attrs({ type: "text" })`
-  width: 100%;
+  width: 50%;
   font-size: 0.9em;
 `;
 
@@ -28,7 +28,7 @@ interface Props {
   name: string;
 }
 
-export function FieldName({ name }: Props) {
+export function TextInput({ name }: Props) {
   const [inputValue, setInputValue] = useState(name);
 
   return <Input value={inputValue} onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setInputValue(e.target.value)} />;

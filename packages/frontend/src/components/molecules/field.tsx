@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { FieldName } from '../atoms/field-name';
-// import { Author } from '../atoms/author';
+import { TextInput } from '../atoms/text-input';
+import { SelectInput } from '../atoms/select-input';
 
 const Container = styled.div`
   width: 100%;
@@ -12,12 +12,23 @@ const Container = styled.div`
 
 export interface Props {
   name: string;
+  type: string;
 }
 
-export function Field({ name }: Props) {
+const typeOptions = [ 
+  {label:"STRING", value:"1"},
+  {label:"INTEGER",value:"2"},
+  {label:"POUNDS", value:"3"},
+  {label:"SQFOOT", value:"4"},
+  {label:"DOLLAR",value:"5"}
+]
+
+
+export function Field({ name, type }: Props) {
   return (
     <Container>
-      <FieldName name={name} />
+      <TextInput name={name} />
+      <SelectInput options={typeOptions} />
     </Container>
   );
 }

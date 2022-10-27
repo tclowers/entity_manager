@@ -19,7 +19,7 @@ const List = styled.ul`
 
 export function FieldList() {
 //   const { loading, error, data = [] } = useBooks(ApiAction.List);
-  const data = [ {"name": "item"}, {"name": "value"}, {"name": "weight"}]
+  const data = [ {"name": "item", "type": "STRING"}, {"name": "value", "type": "INTEGER"}, {"name": "weight", "type":"POUNDS"}]
 
 //   if (loading) return <Spinner />;
 //   if (error) return <Container>Error! {error.message}</Container>;
@@ -28,10 +28,10 @@ export function FieldList() {
     <Container>
       <Title>Fields:</Title>
       <List>
-        {data.map(({ name }: FieldProps, i: number) => {
+        {data.map(({ name, type }: FieldProps, i: number) => {
           return (
             <li key={i}>
-              <Field name={name} key={i} />
+              <Field name={name} type={type} key={i} />
             </li>
           );
         })}
