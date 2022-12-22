@@ -11,8 +11,7 @@ function App() {
       <BrowserRouter>
         <Suspense fallback={<Spinner />}>
           <Routes>
-            <Route path="/" element={<BookPage />} />
-            <Route path="/fields" element={<FieldsPage />} />
+            <Route path="/" element={<FieldsPage />} />
             <Route path="/other" element={<OtherPage />} />
           </Routes>
         </Suspense>

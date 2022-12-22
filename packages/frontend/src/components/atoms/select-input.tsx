@@ -8,7 +8,7 @@ const Container = styled.input.attrs({ type: "text" })`
 `;
 
 const Select = styled.select`
-  width: 50%;
+  // width: 50%;
   height: 1.9em;
   background: white;
   color: gray;
@@ -16,6 +16,7 @@ const Select = styled.select`
   font-size: 1em;
   border: none;
   margin-left: 10px;
+  margin-right: 10px;
 
   option {
     color: black;
@@ -23,11 +24,13 @@ const Select = styled.select`
     display: flex;
     white-space: pre;
     min-height: 1.9em;
-    padding: 0px 2px 1px;
+    padding: 0px 2px 1px;Select
   }
 `;
 
 interface Props {
+  label: string;
+  initialValue: string;
   options: SelectProps[];
 }
 
@@ -36,24 +39,19 @@ interface SelectProps {
   value: string;
 }
 
-export function SelectInput({ options }: Props) {
-  // const [inputValue, setInputValue] = useState(type);
+export function SelectInput({ label, options, initialValue }: Props) {
+  console.log("\n\n label: %s\n\n", label)
+  
+  const [inputValue, setInputValue] = useState(initialValue);
 
-//   return <Select value={inputValue} onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setInputValue(e.target.value)} />;
-    return <Select>
-        <option value="" hidden>
-          Type
-        </option>
-        {/* <option value="1">STRING</option>
-        <option value="2">INTEGER</option>
-        <option value="3">POUNDS</option>
-        <option value="4">SQFEET</option>
-        <option value="5">DOLLARS</option> */}
+  console.log("\n\n initialValue: %s\n\n", initialValue)
+  console.log("\n\n inputValue: %s\n\n", inputValue)
 
-        {options.map(({ label, value }: SelectProps, i: number) => {
-          return (
-              <option value={value} key={i}>{label}</option>
-          );
-        })}
-    </Select>
+  return <Select value={inputValue} onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setInputValue(e.target.value)}>
+      {options.map(({ label, value }: SelectProps, i: number) => {
+        return (
+            <option value={label} key={i}>{label}</option>
+        );
+      })}
+  </Select>
 }

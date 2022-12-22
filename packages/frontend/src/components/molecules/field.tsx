@@ -13,6 +13,8 @@ const Container = styled.div`
 export interface Props {
   name: string;
   type: string;
+  fieldClass: string;
+  valueFunction: string;
 }
 
 const typeOptions = [ 
@@ -23,12 +25,20 @@ const typeOptions = [
   {label:"DOLLAR",value:"5"}
 ]
 
+const classOptions = [
+  {label:"REQUIRED", value:"1"},
+  {label:"OPTIONAL",value:"2"},
+  {label:"DERIVED", value:"3"}
+]
 
-export function Field({ name, type }: Props) {
+
+export function Field({ name, type, fieldClass, valueFunction }: Props) {
   return (
     <Container>
       <TextInput name={name} />
-      <SelectInput options={typeOptions} />
+      <SelectInput label="Type" options={typeOptions} initialValue={type} />
+      <SelectInput label="Class" options={classOptions}  initialValue={fieldClass} />
+      { fieldClass == "DERIVED" && <TextInput name={valueFunction} />}
     </Container>
   );
 }

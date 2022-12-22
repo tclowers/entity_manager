@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { useState } from "react";
 
 const Container = styled.input.attrs({ type: "text" })`
-  width: 50%;
   font-size: 0.9em;
 `;
 
@@ -14,9 +13,8 @@ const Input = styled.input.attrs(props => ({
   // or we can define dynamic ones
   size: props.size || "1em",
 }))`
-  color: palevioletred;
-  font-size: 1em;
-  border: 2px solid palevioletred;
+  font-size: 0.8em;
+  border: 2px solid;
   border-radius: 3px;
 
   /* here we use the dynamically computed prop */
