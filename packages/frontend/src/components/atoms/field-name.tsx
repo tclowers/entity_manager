@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useContext } from "react";
+import { useFieldsContext } from '../../contexts/fields-context';
+
 
 const Container = styled.input.attrs({ type: "text" })`
   font-size: 0.9em;
@@ -23,13 +24,18 @@ const Input = styled.input.attrs(props => ({
 `;
 
 interface Props {
-  name: string;
+  idx: number;
 }
 
-export function FieldName({ name }: Props) {
-    // const { state, dispatch } = useContext(FieldsContext);
+export function FieldName({ idx }: Props) {
+    const { state, dispatch } = useFieldsContext();
 
+    const name = state.fields[idx].name
+
+    const onTextUpdate= (event:any) => {
+        dispatch({ type: 'changeName', name: event.target.value, idx: idx});
+      };
 
   // return <Input value={inputValue} onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setInputValue(e.target.value)} />;
-  return <Input value="something" />;
+  return <Input value={name} onChange={onTextUpdate} />;
 }

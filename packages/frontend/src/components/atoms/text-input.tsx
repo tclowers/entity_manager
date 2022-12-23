@@ -27,8 +27,7 @@ interface Props {
 }
 
 export function TextInput({ name }: Props) {
-  // const [inputValue, setInputValue] = useState(name);
+  const [inputValue, setInputValue] = useState(name);
 
-  // return <Input value={inputValue} onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setInputValue(e.target.value)} />;
-  return <Input value="something" />;
+  return <Input value={inputValue} onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setInputValue(e.target.value)} />;
 }

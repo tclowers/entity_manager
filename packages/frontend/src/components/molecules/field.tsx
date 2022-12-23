@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { FieldName } from '../atoms/field-name';
 import { TextInput } from '../atoms/text-input';
 import { SelectInput } from '../atoms/select-input';
 
@@ -11,7 +12,7 @@ const Container = styled.div`
 `;
 
 export interface Props {
-  key: number;
+  idx: number;
   name: string;
   type: string;
   fieldClass: string;
@@ -33,10 +34,12 @@ const classOptions = [
 ]
 
 
-export function Field({ key, name, type, fieldClass, valueFunction }: Props) {
+export function Field({ idx, name, type, fieldClass, valueFunction }: Props) {
+  console.log("field key value: ", idx.toString())
+
   return (
     <Container>
-      <TextInput name={name} />
+      <FieldName idx={idx}/>
       <SelectInput label="Type" options={typeOptions} initialValue={type} />
       <SelectInput label="Class" options={classOptions}  initialValue={fieldClass} />
       { fieldClass == "DERIVED" && <TextInput name={valueFunction} />}

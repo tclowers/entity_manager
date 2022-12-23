@@ -39,13 +39,8 @@ interface SelectProps {
   value: string;
 }
 
-export function SelectInput({ label, options, initialValue }: Props) {
-  console.log("\n\n label: %s\n\n", label)
-  
+export function SelectInput({ label, options, initialValue }: Props) {  
   const [inputValue, setInputValue] = useState(initialValue);
-
-  console.log("\n\n initialValue: %s\n\n", initialValue)
-  console.log("\n\n inputValue: %s\n\n", inputValue)
 
   return <Select value={inputValue} onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setInputValue(e.target.value)}>
       {options.map(({ label, value }: SelectProps, i: number) => {

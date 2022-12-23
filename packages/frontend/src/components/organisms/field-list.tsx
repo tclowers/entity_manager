@@ -46,7 +46,7 @@ export function FieldList() {
   let fields = state.fields.map(({ name, type, fieldClass, valueFunction }: FieldProps, i: number) => {
     return (
       <li key={i}>
-        <Field name={name} type={type} key={i} fieldClass={fieldClass} valueFunction={valueFunction} />
+        <Field name={name} type={type} idx={i} fieldClass={fieldClass} valueFunction={valueFunction} />
       </li>
     );
   })

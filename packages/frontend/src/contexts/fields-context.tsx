@@ -8,30 +8,38 @@ type FieldState = {
 
 const initialState = {
     fields: [ 
-        {"key": 0, "name": "item", "type": "STRING", "fieldClass":"REQUIRED", "valueFunction":""},
-        {"key": 1, "name": "value", "type": "INTEGER", "fieldClass":"OPTIONAL", "valueFunction":""},
-        {"key": 2, "name": "weight", "type":"POUNDS", "fieldClass":"DERIVED", "valueFunction":"value*1.17"}
+        {"idx": 0, "name": "item", "type": "STRING", "fieldClass":"REQUIRED", "valueFunction":""},
+        {"idx": 1, "name": "value", "type": "INTEGER", "fieldClass":"OPTIONAL", "valueFunction":""},
+        {"idx": 2, "name": "weight", "type":"POUNDS", "fieldClass":"DERIVED", "valueFunction":"value*1.17"}
     ]
 }
 
 const addField = (fieldList: FieldProps[]) => {
     return [
         ...fieldList,
-        {"key": fieldList.length, "name": "", "type":"", "fieldClass":"", "valueFunction":""}
+        {"idx": fieldList.length, "name": "", "type":"", "fieldClass":"", "valueFunction":""}
     ]
+}
+
+
+const changeName = (fieldList: FieldProps[], name: string, idx: number) => {
+    fieldList[idx].name = name // should use immutable method here
+    return fieldList
 }
 
 type FieldAction =
     //  | { type: 'success', results: HNResponse }
-    //  | { type: 'failure', error: string }
+    | { type: 'changeName', name: string, idx: number }
     | { type: 'addField' };
 
 function reducer(state: FieldState, action: FieldAction) {
     switch (action.type) {
         case 'addField':
-        return { ...state, fields: addField(state.fields) };
+            return { ...state, fields: addField(state.fields) };
+        case 'changeName':
+            return { ...state, fields: changeName(state.fields, action.name, action.idx) };
         default:
-        throw new Error();
+            throw new Error();
     }
 }
 
