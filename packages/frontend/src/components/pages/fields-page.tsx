@@ -21,7 +21,6 @@ export function FieldsPage() {
   return (
     <FieldsProvider>
       <Container>
-        <Logo />
         <FieldList />
       </Container>
     </FieldsProvider>

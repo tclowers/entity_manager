@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import { FieldName } from '../atoms/field-name';
 import { TextInput } from '../atoms/text-input';
 import { SelectInput } from '../atoms/select-input';
+import { FieldType } from '../atoms/field-type';
+import { FieldClass } from '../atoms/field-class';
 
 const Container = styled.div`
   width: 100%;
@@ -40,8 +42,8 @@ export function Field({ idx, name, type, fieldClass, valueFunction }: Props) {
   return (
     <Container>
       <FieldName idx={idx}/>
-      <SelectInput label="Type" options={typeOptions} initialValue={type} />
-      <SelectInput label="Class" options={classOptions}  initialValue={fieldClass} />
+      <FieldType idx={idx} label="Type" options={typeOptions} />
+      <FieldClass idx={idx} label="Class" options={classOptions} />
       { fieldClass == "DERIVED" && <TextInput name={valueFunction} />}
     </Container>
   );

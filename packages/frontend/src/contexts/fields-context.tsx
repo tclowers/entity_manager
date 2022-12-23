@@ -27,9 +27,23 @@ const changeName = (fieldList: FieldProps[], name: string, idx: number) => {
     return fieldList
 }
 
+
+const changeType = (fieldList: FieldProps[], fieldType: string, idx: number) => {
+    fieldList[idx].type = fieldType // should use immutable method here
+    return fieldList
+}
+
+
+const changeClass = (fieldList: FieldProps[], fieldClass: string, idx: number) => {
+    console.log("changeClass: ", fieldClass)
+    fieldList[idx].fieldClass = fieldClass // should use immutable method here
+    return fieldList
+}
+
 type FieldAction =
-    //  | { type: 'success', results: HNResponse }
     | { type: 'changeName', name: string, idx: number }
+    | { type: 'changeType', fieldType: string, idx: number }
+    | { type: 'changeClass', fieldClass: string, idx: number }
     | { type: 'addField' };
 
 function reducer(state: FieldState, action: FieldAction) {
@@ -38,6 +52,10 @@ function reducer(state: FieldState, action: FieldAction) {
             return { ...state, fields: addField(state.fields) };
         case 'changeName':
             return { ...state, fields: changeName(state.fields, action.name, action.idx) };
+        case 'changeType':
+            return { ...state, fields: changeType(state.fields, action.fieldType, action.idx) };
+        case 'changeClass':
+            return { ...state, fields: changeClass(state.fields, action.fieldClass, action.idx) };
         default:
             throw new Error();
     }
