@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useState } from "react";
+import { useContext } from "react";
 
 const Container = styled.input.attrs({ type: "text" })`
   font-size: 0.9em;
@@ -26,8 +26,9 @@ interface Props {
   name: string;
 }
 
-export function TextInput({ name }: Props) {
-  // const [inputValue, setInputValue] = useState(name);
+export function FieldName({ name }: Props) {
+    // const { state, dispatch } = useContext(FieldsContext);
+
 
   // return <Input value={inputValue} onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setInputValue(e.target.value)} />;
   return <Input value="something" />;

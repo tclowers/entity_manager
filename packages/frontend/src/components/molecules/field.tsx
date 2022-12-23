@@ -11,6 +11,7 @@ const Container = styled.div`
 `;
 
 export interface Props {
+  key: number;
   name: string;
   type: string;
   fieldClass: string;
@@ -32,7 +33,7 @@ const classOptions = [
 ]
 
 
-export function Field({ name, type, fieldClass, valueFunction }: Props) {
+export function Field({ key, name, type, fieldClass, valueFunction }: Props) {
   return (
     <Container>
       <TextInput name={name} />

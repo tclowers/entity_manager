@@ -2,6 +2,8 @@ import React from 'react';
 import { FieldList } from '../organisms/field-list';
 import { Logo } from '../atoms/logo';
 import styled from 'styled-components';
+import FieldsProvider from '../../contexts/fields-context';
+
 
 const Container = styled.div`
   text-align: center;
@@ -17,9 +19,11 @@ const Container = styled.div`
 
 export function FieldsPage() {
   return (
-    <Container>
-      <Logo />
-      <FieldList />
-    </Container>
+    <FieldsProvider>
+      <Container>
+        <Logo />
+        <FieldList />
+      </Container>
+    </FieldsProvider>
   );
 }
