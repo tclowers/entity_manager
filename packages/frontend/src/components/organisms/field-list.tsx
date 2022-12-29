@@ -1,13 +1,9 @@
 import React, {useContext} from 'react';
 import styled from 'styled-components';
-import { useBooks } from '../../api/books';
-import { ApiAction } from '../../api/common';
 import { Field, Props as FieldProps } from '../molecules/field';
-import { Spinner } from '../atoms/spinner';
-
-import { useState } from 'react';
-import { NavLink } from 'react-router-dom';
 import { useFieldsContext } from '../../contexts/fields-context';
+import { EntityField } from '../../models/entity-field';
+import { EntityName } from '../atoms/entity-name';
 
 
 
@@ -16,7 +12,9 @@ const Container = styled.div`
 `;
 
 const Title = styled.h2`
+  margin-right: 0.5em;
   margin-bottom: 0.5em;
+  color: black;
 `;
 
 const List = styled.ul`
@@ -25,14 +23,24 @@ const List = styled.ul`
 
 const Button = styled.button`
   /* Adapt the colors based on primary prop */
-  background: "white";
-  color: "palevioletred";
+  background: "blue";
+  color: "white";
 
   font-size: 1em;
-  margin: 1em;
+  margin: 1em;white
   padding: 0.25em 1em;
-  border: 2px solid palevioletred;
   border-radius: 3px;
+`;
+
+const TitleRow = styled.div`
+  display: flex;
+  flex-direction: row;justify-content: flex-start
+  justify-content: flex-start;
+`;
+
+const SubTitle = styled.h2`
+  font-size: 0.8em;
+  color: black;
 `;
 
 export function FieldList() {
@@ -43,7 +51,11 @@ export function FieldList() {
     dispatch({ type: 'addField'});
   };
 
-  let fields = state.fields.map(({ name, type, fieldClass, valueFunction }: FieldProps, i: number) => {
+  const saveEntity = (event:any) => {
+    dispatch({ type: 'saveEntity'});
+  };
+
+  let fields = state.fields.map(({ name, type, fieldClass, valueFunction }: EntityField, i: number) => {
     return (
       <li key={i}>
         <Field name={name} type={type} idx={i} fieldClass={fieldClass} valueFunction={valueFunction} />
@@ -56,11 +68,18 @@ export function FieldList() {
 
   return (
     <Container>
-      <Title>Fields:</Title>
+      <TitleRow>
+        <Title>Entity:</Title>
+        <EntityName />
+      </TitleRow>
+      <SubTitle>Schema</SubTitle>
       <List>
         {fields}
       </List>
-      <Button onClick={onAddBtnClick}>+</Button>
+      <Button onClick={onAddBtnClick}>+ Field</Button>
+      <SubTitle>Faces</SubTitle>
+      <SubTitle>Events</SubTitle>
+      <Button onClick={saveEntity}>Save Entity</Button>
     </Container>
   );
 }

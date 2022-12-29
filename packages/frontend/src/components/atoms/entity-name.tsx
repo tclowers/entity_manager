@@ -24,17 +24,17 @@ const Input = styled.input.attrs(props => ({
   padding: ${props => props.size};
 `;
 
-interface Props {
-  idx: number;
-}
+// interface Props {
+//   idx: number;
+// }
 
-export function FieldName({ idx }: Props) {
+export function EntityName() {
     const { state, dispatch } = useFieldsContext();
 
-    const name = state.fields[idx].name
+    const name = state.name
 
     const onTextUpdate= (event:any) => {
-        dispatch({ type: 'changeName', name: event.target.value, idx: idx});
+        dispatch({ type: 'changeEntityName', name: event.target.setInputValue});
       };
 
   return <Input value={name} onChange={onTextUpdate} />;

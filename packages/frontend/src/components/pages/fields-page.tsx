@@ -6,8 +6,8 @@ import FieldsProvider from '../../contexts/fields-context';
 
 
 const Container = styled.div`
-  text-align: center;
-  background-color: #282c34;
+  text-align: left;
+  background-color: #fff;
   min-height: 100vh;
   display: flex;
   flex-direction: column;

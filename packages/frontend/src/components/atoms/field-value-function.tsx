@@ -15,8 +15,7 @@ const Input = styled.input.attrs(props => ({
   size: props.size || "0.2em",
 }))`
   font-size: 0.8em;
-  border: 0;
-  border-bottom: 2px solid;
+  border: 2px solid;
   border-radius: 3px;
 
   /* here we use the dynamically computed prop */
@@ -28,13 +27,13 @@ interface Props {
   idx: number;
 }
 
-export function FieldName({ idx }: Props) {
+export function FieldValueFunction({ idx }: Props) {
     const { state, dispatch } = useFieldsContext();
 
-    const name = state.fields[idx].name
+    const name = state.fields[idx].valueFunction
 
     const onTextUpdate= (event:any) => {
-        dispatch({ type: 'changeName', name: event.target.value, idx: idx});
+        dispatch({ type: 'changeValueFunction', valueFunction: event.target.value, idx: idx});
       };
 
   return <Input value={name} onChange={onTextUpdate} />;

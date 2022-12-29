@@ -10,11 +10,11 @@ const Container = styled.input.attrs({ type: "text" })`
 
 const Select = styled.select`
   // width: 50%;
-  height: 1.9em;
+  height: 1.2em;
   background: white;
   color: gray;
   padding-left: 5px;
-  font-size: 1em;
+  font-size: 0.8em;
   border: none;
   margin-left: 10px;
   margin-right: 10px;
@@ -25,7 +25,7 @@ const Select = styled.select`
     display: flex;
     white-space: pre;
     min-height: 1.9em;
-    padding: 0px 2px 1px;Select
+    padding: 0px 1px 1px;Select
   }
 `;
 

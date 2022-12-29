@@ -5,6 +5,8 @@ import { TextInput } from '../atoms/text-input';
 import { SelectInput } from '../atoms/select-input';
 import { FieldType } from '../atoms/field-type';
 import { FieldClass } from '../atoms/field-class';
+import { FieldValueFunction } from '../atoms/field-value-function';
+
 
 const Container = styled.div`
   width: 100%;
@@ -44,7 +46,7 @@ export function Field({ idx, name, type, fieldClass, valueFunction }: Props) {
       <FieldName idx={idx}/>
       <FieldType idx={idx} label="Type" options={typeOptions} />
       <FieldClass idx={idx} label="Class" options={classOptions} />
-      { fieldClass == "DERIVED" && <TextInput name={valueFunction} />}
+      { fieldClass == "DERIVED" && <FieldValueFunction idx={idx} />}
     </Container>
   );
 }
