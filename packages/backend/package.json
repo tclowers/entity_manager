@@ -19,6 +19,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.20.1",
     "cors": "^2.8.5",
     "db-migrate": "^0.11.13",
     "db-migrate-pg": "^1.2.2",
@@ -26,7 +27,8 @@
     "express": "^4.17.1",
     "path": "^0.12.7",
     "reflect-metadata": "^0.1.13",
-    "slonik": "^22.4.11"
+    "slonik": "^22.4.11",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.10.5",
@@ -39,6 +41,7 @@
     "@types/dotenv-safe": "^8.1.1",
     "@types/express": "^4.17.7",
     "@types/slonik": "^22.1.2",
+    "@types/uuid": "^9.0.0",
     "babel-plugin-root-import": "^6.5.0",
     "babel-polyfill": "^6.26.0",
     "eslint": "^7.6.0",
