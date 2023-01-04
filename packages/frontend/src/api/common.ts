@@ -6,7 +6,7 @@ export enum ApiAction {
   Read = 'READ',
   Update = 'UPDATE',
   Destroy = 'DESTROY',
-  PickList = 'PICK_LIST',
+  ListOptions = 'LIST_OPTIONS',
 }
 
 export const apiRoute = (path: string): string => {

@@ -7,8 +7,6 @@ const getRoute = (action: ApiAction) => {
   switch (action) {
     case ApiAction.List:
       return apiRoute('/entities');
-    case ApiAction.PickList:
-      return apiRoute('/entities-list');
     default:
       return apiRoute('/entities');
   }

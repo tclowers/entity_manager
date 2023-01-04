@@ -6,6 +6,7 @@ import { FieldClass } from '../atoms/field-class';
 import { FieldValueFunction } from '../atoms/field-value-function';
 
 
+
 const Container = styled.div`
   width: 100%;
   padding: 0.5em 0;
@@ -22,11 +23,11 @@ export interface Props {
 }
 
 const typeOptions = [ 
-  {label:"STRING", value:"1"},
-  {label:"INTEGER",value:"2"},
-  {label:"POUNDS", value:"3"},
-  {label:"SQFOOT", value:"4"},
-  {label:"DOLLAR",value:"5"}
+  {label:"STRING", id:"1"},
+  {label:"INTEGER",id:"2"},
+  {label:"POUNDS", id:"3"},
+  {label:"SQFOOT", id:"4"},
+  {label:"DOLLAR",id:"5"}
 ]
 
 const classOptions = [
@@ -37,6 +38,7 @@ const classOptions = [
 
 
 export function Field({ idx, name, type, fieldClass, valueFunction }: Props) {
+  
   return (
     <Container>
       <FieldName idx={idx}/>
