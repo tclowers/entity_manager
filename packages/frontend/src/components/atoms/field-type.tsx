@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useFieldsContext } from '../../contexts/fields-context';
+import { useEntityContext } from '../../contexts/entity-context';
 
 
 const Container = styled.input.attrs({ type: "text" })`
@@ -42,7 +42,7 @@ interface SelectProps {
 
 export function FieldType({ idx, options }: Props) {  
 
-  const { state, dispatch } = useFieldsContext();
+  const { state, dispatch } = useEntityContext();
 
   const fieldType = state.fields[idx].type
 

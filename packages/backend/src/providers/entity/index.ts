@@ -15,10 +15,10 @@ export async function create({ name, fields }: Entity) {
     `;
   const result = await query(insert_entity_code);
 
-  await fields.map(async field => {
+  await fields.map(async ({name, type, fieldClass, valueFunction}:EntityField) => {
     const fields_insert = sql`
       INSERT INTO entity_fields (name, entity_id, field_type_id, field_class_id, value_function)
-        VALUES (${field.name}, ${id}, ${field.type}, ${field.fieldClass}, ${escape(field.valueFunction)})
+        VALUES (${name}, ${id}, ${type}, ${fieldClass}, ${escape(valueFunction)})
     `;
     await query(fields_insert);
   });
@@ -44,7 +44,7 @@ export async function create({ name, fields }: Entity) {
   //   return transResult
   // });
 
+  const resultRows: number = +result.rows
 
-
-  return result.rows;
+  return { "rows": resultRows + fields.length };
 }

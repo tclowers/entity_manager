@@ -1,9 +1,10 @@
 import React, {useContext} from 'react';
 import styled from 'styled-components';
 import { Field, Props as FieldProps } from '../molecules/field';
-import { useFieldsContext } from '../../contexts/fields-context';
+import { useEntityContext } from '../../contexts/entity-context';
 import { EntityField } from '../../models/entity-field';
 import { EntityName } from '../atoms/entity-name';
+import { createEntity } from '../../api/entities';
 
 
 
@@ -43,16 +44,17 @@ const SubTitle = styled.h2`
   color: black;
 `;
 
-export function FieldList() {
+export function Entity() {
 
-  const { state, dispatch } = useFieldsContext();
+  const { state, dispatch } = useEntityContext();
 
   const onAddBtnClick = (event:any) => {
     dispatch({ type: 'addField'});
   };
 
   const saveEntity = (event:any) => {
-    dispatch({ type: 'saveEntity'});
+    console.log("saving entity: ", state);
+    createEntity(state);
   };
 
   let fields = state.fields.map(({ name, type, fieldClass, valueFunction }: EntityField, i: number) => {

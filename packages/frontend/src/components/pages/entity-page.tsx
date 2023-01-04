@@ -1,8 +1,8 @@
 import React from 'react';
-import { FieldList } from '../organisms/field-list';
+import { Entity } from '../organisms/entity';
 import { Logo } from '../atoms/logo';
 import styled from 'styled-components';
-import FieldsProvider from '../../contexts/fields-context';
+import EntityProvider from '../../contexts/entity-context';
 
 
 const Container = styled.div`
@@ -17,12 +17,12 @@ const Container = styled.div`
   color: white;
 `;
 
-export function FieldsPage() {
+export function EntityPage() {
   return (
-    <FieldsProvider>
+    <EntityProvider>
       <Container>
-        <FieldList />
+        <Entity />
       </Container>
-    </FieldsProvider>
+    </EntityProvider>
   );
 }

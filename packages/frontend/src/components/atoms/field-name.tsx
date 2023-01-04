@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useFieldsContext } from '../../contexts/fields-context';
+import { useEntityContext } from '../../contexts/entity-context';
 
 
 const Container = styled.input.attrs({ type: "text" })`
@@ -29,7 +29,7 @@ interface Props {
 }
 
 export function FieldName({ idx }: Props) {
-    const { state, dispatch } = useFieldsContext();
+    const { state, dispatch } = useEntityContext();
 
     const name = state.fields[idx].name
 

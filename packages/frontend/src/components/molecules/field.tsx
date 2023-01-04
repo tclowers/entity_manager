@@ -1,8 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import { FieldName } from '../atoms/field-name';
-import { TextInput } from '../atoms/text-input';
-import { SelectInput } from '../atoms/select-input';
 import { FieldType } from '../atoms/field-type';
 import { FieldClass } from '../atoms/field-class';
 import { FieldValueFunction } from '../atoms/field-value-function';
@@ -39,8 +37,6 @@ const classOptions = [
 
 
 export function Field({ idx, name, type, fieldClass, valueFunction }: Props) {
-  console.log("field key value: ", idx.toString())
-
   return (
     <Container>
       <FieldName idx={idx}/>

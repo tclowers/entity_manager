@@ -12,33 +12,33 @@ const initialState = {
     ]
 }
 
-const addField = (fieldList: EntityField[]) => {
+const addField = (Entity: EntityField[]) => {
     return [
-        ...fieldList,
-        {"idx": fieldList.length, "name": "", "type":"", "fieldClass":"", "valueFunction":""}
+        ...Entity,
+        {"idx": Entity.length, "name": "", "type":"", "fieldClass":"", "valueFunction":""}
     ]
 }
 
-const changeName = (fieldList: EntityField[], name: string, idx: number) => {
-    fieldList[idx].name = name // should use immutable method here
-    return fieldList
+const changeName = (Entity: EntityField[], name: string, idx: number) => {
+    Entity[idx].name = name // should use immutable method here
+    return Entity
 }
 
 
-const changeType = (fieldList: EntityField[], fieldType: string, idx: number) => {
-    fieldList[idx].type = fieldType // should use immutable method here
-    return fieldList
+const changeType = (Entity: EntityField[], fieldType: string, idx: number) => {
+    Entity[idx].type = fieldType // should use immutable method here
+    return Entity
 }
 
 
-const changeClass = (fieldList: EntityField[], fieldClass: string, idx: number) => {
-    fieldList[idx].fieldClass = fieldClass // should use immutable method here
-    return fieldList
+const changeClass = (Entity: EntityField[], fieldClass: string, idx: number) => {
+    Entity[idx].fieldClass = fieldClass // should use immutable method here
+    return Entity
 }
 
-const changeValueFunction = (fieldList: EntityField[], valueFunction: string, idx: number) => {
-    fieldList[idx].valueFunction = valueFunction // should use immutable method here
-    return fieldList
+const changeValueFunction = (Entity: EntityField[], valueFunction: string, idx: number) => {
+    Entity[idx].valueFunction = valueFunction // should use immutable method here
+    return Entity
 }
 
 type FieldAction =
@@ -47,13 +47,10 @@ type FieldAction =
     | { type: 'changeClass', fieldClass: string, idx: number }
     | { type: 'changeValueFunction', valueFunction: string, idx: number }
     | { type: 'addField' }
-    | { type: 'changeEntityName', name: string }
-    | { type: 'saveEntity' };
+    | { type: 'changeEntityName', name: string };
 
 function reducer(state: Entity, action: FieldAction) {
     switch (action.type) {
-        case 'saveEntity':
-            return { ...state };
         case 'addField':
             return { ...state, fields: addField(state.fields) };
         case 'changeName':
@@ -66,14 +63,12 @@ function reducer(state: Entity, action: FieldAction) {
             return { ...state, fields: changeValueFunction(state.fields, action.valueFunction, action.idx) };
         case 'changeEntityName':
             return { ...state, name: action.name };
-        case 'saveEntity':
-            return { ...state };
         default:
             throw new Error();
     }
 }
 
-const FieldsContext = createContext<{
+const EntityContext = createContext<{
     state: Entity;
     dispatch: React.Dispatch<any>;
   }>({
@@ -82,17 +77,17 @@ const FieldsContext = createContext<{
   });
 
 
-const FieldsProvider = ({ children }:any) => {
+const EntityProvider = ({ children }:any) => {
 
     const [state, dispatch] = useReducer(reducer, initialState);
 
     return (
-        <FieldsContext.Provider value={{ state, dispatch }}>
+        <EntityContext.Provider value={{ state, dispatch }}>
         {children}
-        </FieldsContext.Provider>
+        </EntityContext.Provider>
     );
 };
 
-export const useFieldsContext = () => useContext(FieldsContext);
+export const useEntityContext = () => useContext(EntityContext);
 
-export default FieldsProvider;
+export default EntityProvider;
