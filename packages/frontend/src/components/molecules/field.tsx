@@ -4,6 +4,8 @@ import { FieldName } from '../atoms/field-name';
 import { FieldType } from '../atoms/field-type';
 import { FieldClass } from '../atoms/field-class';
 import { FieldValueFunction } from '../atoms/field-value-function';
+import { FieldTypes } from '../../constants/field_types';
+import { FieldClasses } from '../../constants/field_classes';
 
 
 
@@ -31,9 +33,9 @@ const typeOptions = [
 ]
 
 const classOptions = [
-  {label:"REQUIRED", value:"1"},
-  {label:"OPTIONAL",value:"2"},
-  {label:"DERIVED", value:"3"}
+  {label:"REQUIRED", id:"1"},
+  {label:"OPTIONAL",id:"2"},
+  {label:"DERIVED", id:"3"}
 ]
 
 
@@ -44,7 +46,7 @@ export function Field({ idx, name, type, fieldClass, valueFunction }: Props) {
       <FieldName idx={idx}/>
       <FieldType idx={idx} label="Type" options={typeOptions} />
       <FieldClass idx={idx} label="Class" options={classOptions} />
-      { fieldClass == "DERIVED" && <FieldValueFunction idx={idx} />}
+      { fieldClass == FieldClasses.Derived && <FieldValueFunction idx={idx} />}
     </Container>
   );
 }

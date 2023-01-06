@@ -5,10 +5,10 @@ import { EntityField } from '../models/entity-field';
 const initialState = {
     name: "Some Entity",
     fields: [ 
-        {"name": "item", "type": "STRING", "fieldClass":"REQUIRED", "valueFunction":""},
-        {"name": "value", "type": "INTEGER", "fieldClass":"OPTIONAL", "valueFunction":""},
-        {"name": "weight", "type":"POUNDS", "fieldClass":"DERIVED", "valueFunction":"value*1.17"},
-        {"name": "shippingFee", "type":"DOLLARS", "fieldClass":"DERIVED", "valueFunction":"weight*0.08"}
+        {"name": "item", "type": "5e0cfb65-7cda-494c-844a-87bb922535da", "fieldClass":"2ea5efde-5ab1-456b-9ad8-8fc7132b8079", "valueFunction":""},
+        {"name": "value", "type": "227cc35c-a475-45ad-95d5-b998b25b17b6", "fieldClass":"3525ab51-31ce-4b6e-ad8c-422ab11c8a5d", "valueFunction":""},
+        {"name": "weight", "type":"c0694b25-bf84-4a55-a106-3d6daf2f1bf1", "fieldClass":"b34ead69-dd7e-4006-9f5d-5b093e658e3f", "valueFunction":"value*1.17"},
+        {"name": "shippingFee", "type":"c40c7295-90fc-48e3-b995-86e379578295", "fieldClass":"b34ead69-dd7e-4006-9f5d-5b093e658e3f", "valueFunction":"weight*0.08"}
     ]
 }
 

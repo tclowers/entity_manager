@@ -48,3 +48,32 @@ export async function create({ name, fields }: Entity) {
 
   return { "rows": resultRows + fields.length };
 }
+
+type EntityHeader = {
+  name: string,
+  id: string
+}
+
+export async function fetch(id: string) {
+  const sql_code = sql`
+    SELECT *
+    FROM entities
+    WHERE id=${id}
+  `;
+  const results = await query(sql_code);
+
+  let entity_result:EntityHeader = results?.rows[0] as EntityHeader
+
+  const fields_sql_code = sql`
+    SELECT *
+    FROM entity_fields ef
+    WHERE ef.entity_id =${id}
+  `;
+  const field_results = await query(fields_sql_code);
+
+  const entity_nested = {
+    ...entity_result,
+    fields: field_results.rows
+  }  
+  return entity_nested;
+}

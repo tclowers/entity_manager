@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { create as createEntity } from '/providers/entity';
+import { create as createEntity, fetch as fetchEntity } from '/providers/entity';
 
 export const create = async (req: Request, res: Response) => {
     const entity = req.body;
@@ -8,3 +8,11 @@ export const create = async (req: Request, res: Response) => {
     const payload = JSON.stringify(result);
     res.send(payload);
 };
+
+export const fetch = async (req: Request, res: Response) => {
+    const entityId = req.params.entityId;
+    const result = await fetchEntity(entityId);
+    const payload = JSON.stringify(result);
+    res.send(payload);
+};
+  

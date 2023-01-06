@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useEntityContext } from '../../contexts/entity-context';
+import { useFieldClasses } from '../../api/field-class';
+import { ApiAction } from '../../api/common';
 
 
 const Container = styled.input.attrs({ type: "text" })`
@@ -37,7 +39,7 @@ interface Props {
 
 interface SelectProps {
   label: string;
-  value: string;
+  id: string;
 }
 
 export function FieldClass({ idx, options }: Props) {  
@@ -46,15 +48,18 @@ export function FieldClass({ idx, options }: Props) {
 
   const fieldClass = state.fields[idx].fieldClass
 
+  const [{ data, loading, error }, refetch] = useFieldClasses(ApiAction.ListOptions);
+
   const onClassUpdate= (event:any) => {
-      dispatch({ type: 'changeClass', fieldClass: event.target.value, idx: idx});
-    };
+    dispatch({ type: 'changeClass', fieldClass: event.target.value, idx: idx});
+  };
 
   return <Select value={fieldClass} onChange={onClassUpdate}>
-      {options.map(({ label, value }: SelectProps, i: number) => {
-        return (
-            <option value={label} key={i}>{label}</option>
-        );
-      })}
+    {loading && <option value="no_id" key="1"> </option>}
+    {data && data.map(({ label, id }: SelectProps, i: number) => {
+      return (
+          <option value={id} key={i}>{label}</option>
+      );
+    })}
   </Select>
 }

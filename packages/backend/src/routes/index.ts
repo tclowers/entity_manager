@@ -13,6 +13,7 @@ router.get('/', (req: Request, res: Response) => {
 
 // router.get('/books', books.list);
 
+router.get('/entities/:entityId', entities.fetch);
 router.post('/entities', entities.create);
 router.get('/field-types-options', fieldTypes.options);
 router.get('/field-classes-options', fieldClasses.options);
