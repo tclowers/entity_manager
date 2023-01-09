@@ -56,24 +56,41 @@ type EntityHeader = {
 
 export async function fetch(id: string) {
   const sql_code = sql`
-    SELECT *
-    FROM entities
-    WHERE id=${id}
+    WITH field_types as (
+      SELECT
+        field_types.*
+      FROM field_types
+      GROUP BY field_types.id
+      ORDER by field_types.id
+    ), field_classes as (
+      SELECT
+        field_classes.*
+      FROM field_classes
+      GROUP BY field_classes.id
+      ORDER by field_classes.id
+    ), entity_fields as (
+      SELECT
+        entity_fields.*,
+        json_agg(field_types) as field_type,
+        json_agg(field_classes) as field_class
+      FROM entity_fields
+      LEFT JOIN field_types ON field_types.id = entity_fields.field_type_id
+      LEFT JOIN field_classes ON field_classes.id = entity_fields.field_class_id
+      GROUP BY entity_fields.id
+      ORDER by entity_fields.id
+    ), entities AS (
+      SELECT
+        entities.*,
+        json_agg(entity_fields) as entity_fields
+      FROM entities
+      LEFT JOIN entity_fields ON entity_fields.entity_id = entities.id
+      GROUP BY entities.id
+      ORDER by entities.id
+    )
+    SELECT row_to_json(entities)
+    FROM entities WHERE entities.id=${id}
   `;
   const results = await query(sql_code);
 
-  let entity_result:EntityHeader = results?.rows[0] as EntityHeader
-
-  const fields_sql_code = sql`
-    SELECT *
-    FROM entity_fields ef
-    WHERE ef.entity_id =${id}
-  `;
-  const field_results = await query(fields_sql_code);
-
-  const entity_nested = {
-    ...entity_result,
-    fields: field_results.rows
-  }  
-  return entity_nested;
+  return results?.rows[0];
 }
