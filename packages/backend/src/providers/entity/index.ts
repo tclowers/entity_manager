@@ -1,4 +1,4 @@
-import { sql } from 'slonik';
+// import { sql } from 'slonik';
 import { query } from '../database';
 import { v4 as uuidv4 } from 'uuid';
 import { EntityField } from '/models/entity-field';
@@ -9,19 +9,28 @@ import { escape } from 'sqlstring';
 
 export async function create({ name, fields }: Entity) {
   const id = uuidv4();
-  const insert_entity_code = sql`
-        INSERT INTO entities (id, name)
-          VALUES (${id}, ${name})
-    `;
-  const result = await query(insert_entity_code);
+  // const insert_entity_code = sql`
+  //       INSERT INTO entities (id, name)
+  //         VALUES (${id}, ${name})
+  //   `;
+  const insert_entity_code = `
+    INSERT INTO entities (id, name)
+    VALUES ($1, $2)
+  `;
+  const result = await query(insert_entity_code, [id,name]);
 
   await fields.map(async ({name, field_type_id, field_class_id, value_function}:EntityField) => {
 
-    const fields_insert = sql`
+    // const fields_insert = sql`
+    //   INSERT INTO entity_fields (name, entity_id, field_type_id, field_class_id, value_function)
+    //     VALUES (${name}, ${id}, ${field_type_id}, ${field_class_id as string}, ${escape(value_function)})
+    // `;
+    const fields_insert = `
       INSERT INTO entity_fields (name, entity_id, field_type_id, field_class_id, value_function)
-        VALUES (${name}, ${id}, ${field_type_id}, ${field_class_id as string}, ${escape(value_function)})
+        VALUES ($1, $2, $3, $4, $5)
     `;
-    await query(fields_insert);
+    const fields_values = [name, id, field_type_id, field_class_id, escape(value_function)];
+    await query(fields_insert, fields_values);
   });
 
   ///////////////////////////////////////////////////////////
@@ -52,27 +61,37 @@ export async function create({ name, fields }: Entity) {
 
 export async function update(entityId: string, { name, fields }: Entity) {
   // Update entity record
-  const insert_entity_code = sql`
-      UPDATE entities
-        SET name = ${name}
-      WHERE id = ${entityId}
+  // const insert_entity_code = sql`
+  //     UPDATE entities
+  //       SET name = ${name}
+  //     WHERE id = ${entityId}
+  // `;
+  const insert_entity_code = `
+    UPDATE entities
+      SET name = $1
+    WHERE id = $2
   `;
+  const entity_values = [name, entityId];
 
   var resultRows!: number;
   try{
-    const result = await query(insert_entity_code);
+    const result = await query(insert_entity_code, entity_values);
     resultRows = +result.rows
   } catch (error) {
     console.error(error);
   }
 
-  const delete_fields_code = sql`
+  // const delete_fields_code = sql`
+  //   DELETE FROM entity_fields
+  //   WHERE entity_id = ${entityId}
+  // `;
+  const delete_fields_code = `
     DELETE FROM entity_fields
-    WHERE entity_id = ${entityId}
+    WHERE entity_id = $1
   `;
 
   try{
-    await query(delete_fields_code);
+    await query(delete_fields_code, [entityId]);
   } catch (error) {
     console.error(error);
   }
@@ -80,9 +99,19 @@ export async function update(entityId: string, { name, fields }: Entity) {
   // Update entity fields based on update payload
   fields.map(async ({id, name, field_type_id, field_class_id, value_function}:EntityField) => {
     const fieldId = id as string
-    const fields_insert = sql`
+    // const fields_insert = sql`
+    //   INSERT INTO entity_fields (id, name, entity_id, field_type_id, field_class_id, value_function)
+    //     VALUES (${fieldId}, ${name}, ${entityId}, ${field_type_id}, ${field_class_id}, ${escape(value_function)})
+    //   ON CONFLICT (id) DO UPDATE 
+    //     SET
+    //       name = EXCLUDED.name, 
+    //       field_type_id = EXCLUDED.field_type_id,
+    //       field_class_id = EXCLUDED.field_class_id,
+    //       value_function = EXCLUDED.value_function
+    // `;
+    const fields_insert = `
       INSERT INTO entity_fields (id, name, entity_id, field_type_id, field_class_id, value_function)
-        VALUES (${fieldId}, ${name}, ${entityId}, ${field_type_id}, ${field_class_id}, ${escape(value_function)})
+        VALUES ($1, $2, $3, $4, $5, $6)
       ON CONFLICT (id) DO UPDATE 
         SET
           name = EXCLUDED.name, 
@@ -90,8 +119,16 @@ export async function update(entityId: string, { name, fields }: Entity) {
           field_class_id = EXCLUDED.field_class_id,
           value_function = EXCLUDED.value_function
     `;
+    const fields_values = [
+      fieldId,
+      name,
+      entityId,
+      field_type_id,
+      field_class_id,
+      escape(value_function)
+    ];
     try {
-      await query(fields_insert);
+      await query(fields_insert, fields_values);
     } catch (error) {
       console.error(error);
     }    
@@ -108,7 +145,7 @@ export type EntityResult = {
   row_to_json: Entity;
 }
 export async function fetch(id: string) {
-  const sql_code = sql`
+  const sql_code = `
     WITH field_types as (
       SELECT
         field_types.*
@@ -141,34 +178,34 @@ export async function fetch(id: string) {
       ORDER by entities.id
     )
     SELECT row_to_json(entities)
-    FROM entities WHERE entities.id=${id}
+    FROM entities WHERE entities.id=$1
   `;
-  const results = await query(sql_code);
+  const results = await query(sql_code, [id]);
 
   const resultRow: EntityResult = results?.rows[0] as EntityResult
   return resultRow?.row_to_json;
 }
 
 export async function list() {
-  const sql_code = sql`
+  const sql_code = `
       SELECT
         entities.*,
       FROM entities
       GROUP BY entities.id
       ORDER by entities.id
   `;
-  const results = await query(sql_code);
+  const results = await query(sql_code,[]);
 
   return results?.rows;
 }
 
 export async function destroy(id: string) {
-  const sql_code = sql`
+  const sql_code = `
     DELETE
     FROM entities
-    WHERE entities.id=${id}
+    WHERE entities.id=$1
   `;
-  const results = await query(sql_code);
+  const results = await query(sql_code, [id]);
 
   return 1;
 }
