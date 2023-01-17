@@ -46,15 +46,15 @@ export function FieldType({ idx, options }: Props) {
 
   const { state, dispatch } = useEntityContext();
 
-  const fieldType = state.fields[idx].type
+  const field_type_id = state.fields[idx].field_type_id
 
   const [{ data, loading, error }, refetch] = useFieldTypes(ApiAction.ListOptions);
 
   const onTypeUpdate= (event:any) => {
-      dispatch({ type: 'changeType', fieldType: event.target.value, idx: idx});
+      dispatch({ type: 'changeType', field_type_id: event.target.value, idx: idx});
     };
 
-  return <Select value={fieldType} onChange={onTypeUpdate}>
+  return <Select value={field_type_id} onChange={onTypeUpdate}>
       {loading && <option value="no_id" key="1"> </option>}
       {data && data.map(({ label, id }: SelectProps, i: number) => {
         return (

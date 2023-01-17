@@ -9,10 +9,6 @@ import { escape } from 'sqlstring';
 
 export async function create({ name, fields }: Entity) {
   const id = uuidv4();
-  // const insert_entity_code = sql`
-  //       INSERT INTO entities (id, name)
-  //         VALUES (${id}, ${name})
-  //   `;
   const insert_entity_code = `
     INSERT INTO entities (id, name)
     VALUES ($1, $2)
@@ -20,11 +16,6 @@ export async function create({ name, fields }: Entity) {
   const result = await query(insert_entity_code, [id,name]);
 
   await fields.map(async ({name, field_type_id, field_class_id, value_function}:EntityField) => {
-
-    // const fields_insert = sql`
-    //   INSERT INTO entity_fields (name, entity_id, field_type_id, field_class_id, value_function)
-    //     VALUES (${name}, ${id}, ${field_type_id}, ${field_class_id as string}, ${escape(value_function)})
-    // `;
     const fields_insert = `
       INSERT INTO entity_fields (name, entity_id, field_type_id, field_class_id, value_function)
         VALUES ($1, $2, $3, $4, $5)
@@ -61,11 +52,6 @@ export async function create({ name, fields }: Entity) {
 
 export async function update(entityId: string, { name, fields }: Entity) {
   // Update entity record
-  // const insert_entity_code = sql`
-  //     UPDATE entities
-  //       SET name = ${name}
-  //     WHERE id = ${entityId}
-  // `;
   const insert_entity_code = `
     UPDATE entities
       SET name = $1
@@ -81,10 +67,6 @@ export async function update(entityId: string, { name, fields }: Entity) {
     console.error(error);
   }
 
-  // const delete_fields_code = sql`
-  //   DELETE FROM entity_fields
-  //   WHERE entity_id = ${entityId}
-  // `;
   const delete_fields_code = `
     DELETE FROM entity_fields
     WHERE entity_id = $1
@@ -99,16 +81,6 @@ export async function update(entityId: string, { name, fields }: Entity) {
   // Update entity fields based on update payload
   fields.map(async ({id, name, field_type_id, field_class_id, value_function}:EntityField) => {
     const fieldId = id as string
-    // const fields_insert = sql`
-    //   INSERT INTO entity_fields (id, name, entity_id, field_type_id, field_class_id, value_function)
-    //     VALUES (${fieldId}, ${name}, ${entityId}, ${field_type_id}, ${field_class_id}, ${escape(value_function)})
-    //   ON CONFLICT (id) DO UPDATE 
-    //     SET
-    //       name = EXCLUDED.name, 
-    //       field_type_id = EXCLUDED.field_type_id,
-    //       field_class_id = EXCLUDED.field_class_id,
-    //       value_function = EXCLUDED.value_function
-    // `;
     const fields_insert = `
       INSERT INTO entity_fields (id, name, entity_id, field_type_id, field_class_id, value_function)
         VALUES ($1, $2, $3, $4, $5, $6)

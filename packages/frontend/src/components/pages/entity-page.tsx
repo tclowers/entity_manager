@@ -1,6 +1,5 @@
 import React from 'react';
 import { Entity } from '../organisms/entity';
-import { Logo } from '../atoms/logo';
 import styled from 'styled-components';
 import EntityProvider from '../../contexts/entity-context';
 

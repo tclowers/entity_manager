@@ -46,15 +46,15 @@ export function FieldClass({ idx, options }: Props) {
 
   const { state, dispatch } = useEntityContext();
 
-  const fieldClass = state.fields[idx].fieldClass
+  const field_class_id = state.fields[idx].field_class_id
 
   const [{ data, loading, error }, refetch] = useFieldClasses(ApiAction.ListOptions);
 
   const onClassUpdate= (event:any) => {
-    dispatch({ type: 'changeClass', fieldClass: event.target.value, idx: idx});
+    dispatch({ type: 'changeClass', field_class_id: event.target.value, idx: idx});
   };
 
-  return <Select value={fieldClass} onChange={onClassUpdate}>
+  return <Select value={field_class_id} onChange={onClassUpdate}>
     {loading && <option value="no_id" key="1"> </option>}
     {data && data.map(({ label, id }: SelectProps, i: number) => {
       return (

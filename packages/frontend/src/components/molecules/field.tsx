@@ -18,10 +18,7 @@ const Container = styled.div`
 
 export interface Props {
   idx: number;
-  name: string;
-  type: string;
-  fieldClass: string;
-  valueFunction: string;
+  field_class_id: string;
 }
 
 const typeOptions = [ 
@@ -39,14 +36,14 @@ const classOptions = [
 ]
 
 
-export function Field({ idx, name, type, fieldClass, valueFunction }: Props) {
+export function Field({ idx, field_class_id }: Props) {
   
   return (
     <Container>
       <FieldName idx={idx}/>
       <FieldType idx={idx} label="Type" options={typeOptions} />
       <FieldClass idx={idx} label="Class" options={classOptions} />
-      { fieldClass == FieldClasses.Derived && <FieldValueFunction idx={idx} />}
+      { field_class_id == FieldClasses.Derived && <FieldValueFunction idx={idx} />}
     </Container>
   );
 }

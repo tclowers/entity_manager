@@ -30,11 +30,11 @@ interface Props {
 export function FieldValueFunction({ idx }: Props) {
     const { state, dispatch } = useEntityContext();
 
-    const name = state.fields[idx].valueFunction
+    const value_function = state.fields[idx].value_function
 
     const onTextUpdate= (event:any) => {
-        dispatch({ type: 'changeValueFunction', valueFunction: event.target.value, idx: idx});
+        dispatch({ type: 'changeValueFunction', value_function: event.target.value, idx: idx});
       };
 
-  return <Input value={name} onChange={onTextUpdate} />;
+  return <Input value={value_function} onChange={onTextUpdate} />;
 }

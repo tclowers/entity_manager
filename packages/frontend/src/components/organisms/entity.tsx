@@ -6,8 +6,6 @@ import { EntityField } from '../../models/entity-field';
 import { EntityName } from '../atoms/entity-name';
 import { createEntity } from '../../api/entities';
 
-
-
 const Container = styled.div`
   padding: 1em, 5%;
 `;
@@ -57,10 +55,10 @@ export function Entity() {
     createEntity(state);
   };
 
-  let fields = state.fields.map(({ name, type, fieldClass, valueFunction }: EntityField, i: number) => {
+  let fields = state.fields.map(({ name, field_type_id, field_class_id, value_function }: EntityField, i: number) => {
     return (
       <li key={i}>
-        <Field name={name} type={type} idx={i} fieldClass={fieldClass} valueFunction={valueFunction} />
+        <Field idx={i} field_class_id={field_class_id} />
       </li>
     );
   })
