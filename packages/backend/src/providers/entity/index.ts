@@ -4,10 +4,10 @@ import { v4 as uuidv4 } from 'uuid';
 import { EntityField } from '/models/entity-field';
 import { Entity } from '/models/entity';
 import { escape } from 'sqlstring';
+import { FieldTypes } from '/constants/field-types';
+import { FieldClasses } from '/constants/field-classes';
 
-
-
-export async function create({ name, fields }: Entity) {
+export async function saveModel( name: string, fields: EntityField[]) {
   const id = uuidv4();
   const insert_entity_code = `
     INSERT INTO entities (id, name)
@@ -48,6 +48,58 @@ export async function create({ name, fields }: Entity) {
   const resultRows: number = +result.rows
 
   return { "rows": resultRows + fields.length };
+}
+
+// Should validate and sanitize table name for SQL code
+const generateTableName = (name:string) => {
+  const tenantName = "tenant_"; // take input from tenancy here
+  return tenantName + name.toLowerCase().replaceAll(" ", "_");
+}
+
+// Should validate and sanitize column name for SQL code
+const generateColumnName = (name:string) => {
+  return name.replaceAll(" ", "_");
+}
+
+const fieldTypeColumnType = (field_type_id:string) => {
+  switch (field_type_id) {
+    case FieldTypes.Integer:
+      return "INTEGER"
+    default:
+      return "VARCHAR(255)";
+  } 
+}
+
+export async function createTable( name: string, fields: EntityField[]) {
+  const tableName = generateTableName(name);
+  const tableHeader =`CREATE TABLE IF NOT EXISTS ${tableName} (\n\tid uuid NOT NULL DEFAULT uuid_generate_v4(),\n\t`;
+
+  const columns:string[] = fields.map(({name, field_type_id, field_class_id, value_function}:EntityField) => {
+    const columnNme = generateColumnName(name)
+    const columnType = fieldTypeColumnType(field_type_id);
+    const nullable = field_class_id == FieldClasses.Required ? " NOT NULL" : ""
+    return columnNme + " " + columnType + nullable;
+  });
+
+  const tableBody = columns.join(",\n\t");
+
+  const pKeyConstraintName = "pk_" + tableName
+
+  const tableFooter = `,\n\tCONSTRAINT ${pKeyConstraintName} PRIMARY KEY (id)\n);`;
+
+  const createTableSQL = tableHeader + tableBody + tableFooter;
+
+  console.log("\n\nCreating table: %s\n\n", createTableSQL);
+
+  const result = await query(createTableSQL, []);
+
+  return { "result": true };
+}
+
+export async function create({ name, fields }: Entity) {
+  const result = await saveModel(name, fields);
+  const tableResult = await createTable(name, fields);
+  return result
 }
 
 export async function update(entityId: string, { name, fields }: Entity) {
