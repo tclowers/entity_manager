@@ -161,7 +161,7 @@ export async function fetch(id: string) {
 export async function list() {
   const sql_code = `
       SELECT
-        entities.*,
+        entities.*
       FROM entities
       GROUP BY entities.id
       ORDER by entities.id

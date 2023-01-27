@@ -3,18 +3,20 @@ import { apiRoute, ApiAction } from './common';
 import { Entity } from '../models/entity';
 import axios from 'axios';
 
-const getRoute = (action: ApiAction) => {
+const getRoute = (action: ApiAction, id?: string) => {
   switch (action) {
     case ApiAction.List:
       return apiRoute('/entities');
+    case ApiAction.Read:
+      return apiRoute('/entities/' + id);
     default:
       return apiRoute('/entities');
   }
 };
 
-export const useEntities = (action = ApiAction.List) => {
+export const useEntities = (action = ApiAction.List, id = '') => {
   let options = {};
-  const route = getRoute(action);
+  const route = getRoute(action, id);
   return useAxios(route);
 };
 

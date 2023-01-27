@@ -2,9 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 import { useState } from "react";
 
-const Container = styled.input.attrs({ type: "text" })`
-  font-size: 0.9em;
-`;
+// const Container = styled.input.attrs({ type: "text" })`
+//   font-size: 0.9em;
+// `;
 
 const Input = styled.input.attrs(props => ({
   // we can define static props
