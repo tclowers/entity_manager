@@ -9,18 +9,20 @@ import { FieldClasses } from '/constants/field-classes';
 
 export async function saveModel( name: string, fields: EntityField[]) {
   const id = uuidv4();
+  const tableName = generateTableName(name);
   const insert_entity_code = `
-    INSERT INTO entities (id, name)
-    VALUES ($1, $2)
+    INSERT INTO entities (id, name, table_name)
+    VALUES ($1, $2, $3)
   `;
-  const result = await query(insert_entity_code, [id,name]);
+  const result = await query(insert_entity_code, [id, name, tableName]);
 
   await fields.map(async ({name, field_type_id, field_class_id, value_function}:EntityField) => {
     const fields_insert = `
-      INSERT INTO entity_fields (name, entity_id, field_type_id, field_class_id, value_function)
-        VALUES ($1, $2, $3, $4, $5)
+      INSERT INTO entity_fields (name, column_name, entity_id, field_type_id, field_class_id, value_function)
+        VALUES ($1, $2, $3, $4, $5, $6)
     `;
-    const fields_values = [name, id, field_type_id, field_class_id, escape(value_function)];
+    const columnName = generateColumnName(name);
+    const fields_values = [name, columnName, id, field_type_id, field_class_id, escape(value_function)];
     await query(fields_insert, fields_values);
   });
 
@@ -75,10 +77,10 @@ export async function createTable( name: string, fields: EntityField[]) {
   const tableHeader =`CREATE TABLE IF NOT EXISTS ${tableName} (\n\tid uuid NOT NULL DEFAULT uuid_generate_v4(),\n\t`;
 
   const columns:string[] = fields.map(({name, field_type_id, field_class_id, value_function}:EntityField) => {
-    const columnNme = generateColumnName(name)
+    const columnName = generateColumnName(name);
     const columnType = fieldTypeColumnType(field_type_id);
     const nullable = field_class_id == FieldClasses.Required ? " NOT NULL" : ""
-    return columnNme + " " + columnType + nullable;
+    return columnName + " " + columnType + nullable;
   });
 
   const tableBody = columns.join(",\n\t");
