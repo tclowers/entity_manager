@@ -1,5 +1,7 @@
 import React from 'react';
+import { useParams } from 'react-router-dom';
 import { CreateResource } from '../organisms/create-resource';
+import { EntityList } from '../organisms/entity-list';
 import styled from 'styled-components';
 import ResourceProvider from '../../contexts/resource-context';
 
@@ -17,11 +19,14 @@ const Container = styled.div`
 `;
 
 export function ResourcePage() {
-  return (
-    <ResourceProvider>
-      <Container>
-        <CreateResource />
-      </Container>
-    </ResourceProvider>
-  );
+    const { action } = useParams();    
+
+    return (
+        <ResourceProvider>
+            <Container>
+                {(typeof action === "undefined" || action === 'create') && <CreateResource />}
+                {action === 'list' && <EntityList />}
+            </Container>
+        </ResourceProvider>
+    );
 }
