@@ -3,6 +3,7 @@ import { Resource } from '../models/resource';
 
 
 const initialState:Resource = {
+    id: '',
     name: '',
     fields: [],
 }
@@ -42,21 +43,22 @@ type FieldAction =
     // | { type: 'changeClass', field_class_id: string, idx: number }
     // | { type: 'changeValueFunction', value_function: string, idx: number }
     // | { type: 'addField' }
-    | { type: 'changeFieldValue', field_value: string, field_id: string };
+    | { type: 'SET_NAME_AND_ID', name: string, id: string }
+    | { type: 'CHANGE_FIELD_VALUE', field_value: string, field_id: string };
 
 function reducer(state: any, action: FieldAction) {
     switch (action.type) {
         // case 'addField':
         //     return { ...state, fields: addField(state.fields) };
-        // case 'changeName':
-        //     return { ...state, fields: changeName(state.fields, action.name, action.idx) };
+        case 'SET_NAME_AND_ID':
+            return { ...state, name: action.name, id: action.id };
         // case 'changeType':
         //     return { ...state, fields: changeType(state.fields, action.field_type_id, action.idx) };
         // case 'changeClass':
         //     return { ...state, fields: changeClass(state.fields, action.field_class_id, action.idx) };
         // case 'changeValueFunction':
         //     return { ...state, fields: changeValueFunction(state.fields, action.value_function, action.idx) };
-        case 'changeFieldValue':
+        case 'CHANGE_FIELD_VALUE':
             state.fields[action.field_id] = action.field_value
             return state;
         default:

@@ -3,6 +3,7 @@ import { Router, Request, Response, NextFunction } from 'express';
 import * as entities from '/modules/entity';
 import * as fieldTypes from '/modules/field-type';
 import * as fieldClasses from '/modules/field-class';
+import * as resources from '/modules/resource';
 
 export const router = Router();
 
@@ -18,4 +19,5 @@ router.put('/entities/:entityId', entities.update);
 router.delete('/entities/:entityId', entities.destroy);
 router.get('/field-types-options', fieldTypes.options);
 router.get('/field-classes-options', fieldClasses.options);
+router.post('/resources/:entityID', resources.create)
 

@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useEffect} from 'react';
 import styled from 'styled-components';
 import { StringInput } from '../atoms/string-input';
 import { NumericInput } from '../atoms/numeric-input';
@@ -68,16 +68,22 @@ export function CreateResource({ entityID }: Props) {
   // const entityID = '42f9856c-dcff-4c41-a0ef-28190b403110';
 
   const [{ data, loading, error }, refetch] = useEntities(ApiAction.Read, entityID);
-
-  if (loading) return <Spinner />;
-  if (error) return <Container>Error! {error.message}</Container>;
-
   const { state, dispatch } = useResourceContext();
+
+  useEffect(() => {
+    if (data) {
+      const { name, id } = data;
+      dispatch({ type: 'SET_NAME_AND_ID', name, id });
+    }
+  }, [data]);
 
   const saveResource = (event:any) => {
     console.log("saving resource: ", state);
     createResource(state);
   };
+
+  if (loading) return <Spinner />;
+  if (error) return <Container>Error! {error.message}</Container>;
 
   console.log("data: ", data)
 

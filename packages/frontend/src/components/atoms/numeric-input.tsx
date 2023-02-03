@@ -29,7 +29,7 @@ export function NumericInput({ fieldID, size }: Props) {
     const { state, dispatch } = useResourceContext();
   
     const onValueUpdate= (event:any) => {
-      dispatch({ type: 'changeFieldValue', field_value: event.target.value, field_id: fieldID});
+      dispatch({ type: 'CHANGE_FIELD_VALUE', field_value: event.target.value, field_id: fieldID});
     };
   
     const fieldVal = state.fields[String(fieldID)];

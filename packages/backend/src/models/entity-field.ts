@@ -10,4 +10,5 @@ export type EntityField = {
     field_class_id: string;
     fieldClass?: FieldClass;
     value_function: string;
+    column_name?: string;
 }

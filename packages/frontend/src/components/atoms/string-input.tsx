@@ -33,7 +33,7 @@ export function StringInput({ fieldID, name, size }: Props) {
   const { state, dispatch } = useResourceContext();
 
   const onTextUpdate= (event:any) => {
-    dispatch({ type: 'changeFieldValue', field_value: event.target.value, field_id: fieldID});
+    dispatch({ type: 'CHANGE_FIELD_VALUE', field_value: event.target.value, field_id: fieldID});
   };
 
   const fieldVal = state.fields[String(fieldID)];
