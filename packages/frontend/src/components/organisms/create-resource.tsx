@@ -59,8 +59,13 @@ const FieldLabel = styled.span`
   align-self: center;
 `;
 
-export function CreateResource() {
-  const entityID = '42f9856c-dcff-4c41-a0ef-28190b403110';
+export interface Props {
+  entityID: string;
+}
+
+
+export function CreateResource({ entityID }: Props) {
+  // const entityID = '42f9856c-dcff-4c41-a0ef-28190b403110';
 
   const [{ data, loading, error }, refetch] = useEntities(ApiAction.Read, entityID);
 

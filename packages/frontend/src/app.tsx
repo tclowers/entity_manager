@@ -13,7 +13,7 @@ function App() {
           <Routes>
             <Route path="/" element={<EntityPage />} />
             <Route path="/resource" element={<ResourcePage />} />
-            <Route path="/resource/:action" element={<ResourcePage />} />
+            <Route path="/resource/:entityID/:action" element={<ResourcePage />} />
             <Route path="/other" element={<OtherPage />} />
           </Routes>
         </Suspense>

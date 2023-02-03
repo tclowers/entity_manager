@@ -15,14 +15,14 @@ const Title = styled.h2`
     margin-bottom: 0.5em;
 `;
 
-export function EntityList() {
+export function UserEntityList() {
   const [{ data, loading, error }, refetch] = useEntities(ApiAction.List);
 
   if (loading) return <Spinner />;
   if (error) return <Container>Error! {error.message}</Container>;
 
   const items = data.map((item: any) => {
-    const url = '/entity-resource-view/' + item.id;
+    const url = '/resource/' + item.id + '/create';
     return {
         ...item,
         url
@@ -31,7 +31,7 @@ export function EntityList() {
 
   return (
     <Container>
-      <Title>Entities:</Title>
+      <Title>Create a Resource:</Title>
       <ItemList items={items} />
     </Container>
   );
