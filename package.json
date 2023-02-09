@@ -6,7 +6,8 @@
   "scripts": {
     "frontend": "cd packages/frontend && npm start",
     "backend": "cd packages/backend && npm start",
-    "start": "concurrently \"npm run frontend\" \"npm run backend\"",
+    "logic_engine": "cd packages/logic_engine && npm start",
+    "start": "concurrently \"npm run frontend\" \"npm run backend\" \"npm run logic_engine\"",
     "test:frontend": "cd packages/frontend && npm run test",
     "test": "npm run test:frontend"
   },
