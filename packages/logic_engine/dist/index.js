@@ -53,41 +53,39 @@ var FieldTypes;
     FieldTypes["String"] = "5e0cfb65-7cda-494c-844a-87bb922535da";
     FieldTypes["Entity"] = "d016d367-8e3a-40f5-a8c0-813787496f30";
 })(FieldTypes = exports.FieldTypes || (exports.FieldTypes = {}));
-function evaluateResource(colValues) {
-    console.log("evaluating colValues: %s", colValues);
+function evaluateResource(fields) {
     let updated = true;
     while (updated) {
         updated = false;
-        for (let i = 0; i < colValues.length; i++) {
-            if (colValues[i].resourceVal !== null || colValues[i].valueFunc === null || colValues[i].resourceClass !== FieldClasses.Derived) {
+        for (let i = 0; i < fields.length; i++) {
+            if (fields[i].fieldValue !== null || fields[i].valueFunc === null || fields[i].field_class_id !== FieldClasses.Derived) {
                 continue;
             }
-            const resourceVars = colValues.reduce((obj, resource) => {
-                if (resource.resourceVal !== null) {
-                    obj[resource.name] = resource.resourceVal;
+            const resourceVars = fields.reduce((obj, resource) => {
+                if (resource.fieldValue !== null) {
+                    obj[resource.name] = resource.fieldValue;
                 }
                 return obj;
             }, {});
             try {
-                console.log("evaluating field: %s", colValues[i]);
-                let resource = colValues[i];
+                let resource = fields[i];
                 let vm = new VM({
                     timeout: 1000,
-                    sandbox: Object.assign({}, resourceVars), // provide the colValues array as a sandboxed variable
+                    sandbox: Object.assign({}, resourceVars), // provide the fields array as a sandboxed variable
                 });
-                resource.resourceVal = vm.run(resource.valueFunc);
-                if (resource.valueType === FieldTypes.Integer) {
-                    resource.resourceVal = Number(resource.resourceVal);
+                resource.fieldValue = vm.run(resource.valueFunc);
+                if (resource.field_type_id === FieldTypes.Integer) {
+                    resource.fieldValue = Number(resource.fieldValue);
                 }
                 updated = true;
             }
             catch (e) {
                 console.error(e);
-                return colValues.map(resource => (Object.assign(Object.assign({}, resource), { resourceVal: null })));
+                return fields.map(resource => (Object.assign(Object.assign({}, resource), { fieldValue: null })));
             }
         }
     }
-    return colValues;
+    return fields;
 }
 app.post('/evaluate-resource', (req, res) => {
     try {

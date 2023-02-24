@@ -56,49 +56,47 @@ export enum FieldTypes {
 
 interface ResourceField {
     name: string;
-    resourceVal: any | null;
+    fieldValue: any | null;
     valueFunc: string | null;
-    valueType: FieldTypes.String | FieldTypes.Integer;
-    resourceClass: FieldClasses.Required | FieldClasses.Optional | FieldClasses.Derived;
+    field_type_id: FieldTypes.String | FieldTypes.Integer;
+    field_class_id: FieldClasses.Required | FieldClasses.Optional | FieldClasses.Derived;
 }
 
-function evaluateResource(colValues: ResourceField[]): ResourceField[] {
-    console.log("evaluating colValues: %s", colValues);
+function evaluateResource(fields: ResourceField[]): ResourceField[] {
     let updated = true;
     while (updated) {
       updated = false;
 
-      for (let i = 0; i < colValues.length; i++) {
-        if (colValues[i].resourceVal !== null || colValues[i].valueFunc === null || colValues[i].resourceClass !== FieldClasses.Derived) {
+      for (let i = 0; i < fields.length; i++) {
+        if (fields[i].fieldValue !== null || fields[i].valueFunc === null || fields[i].field_class_id !== FieldClasses.Derived) {
           continue;
         }
 
-        const resourceVars = colValues.reduce((obj, resource) => {
-            if (resource.resourceVal !== null) {
-              obj[resource.name] = resource.resourceVal;
+        const resourceVars = fields.reduce((obj, resource) => {
+            if (resource.fieldValue !== null) {
+              obj[resource.name] = resource.fieldValue;
             }
             return obj;
           }, {} as { [key: string]: any });
-          
+
         try {
-            console.log("evaluating field: %s", colValues[i])
-          let resource = colValues[i];
+          let resource = fields[i];
           let vm = new VM({
             timeout: 1000, // set a timeout for script execution
-            sandbox: { ...resourceVars }, // provide the colValues array as a sandboxed variable
+            sandbox: { ...resourceVars }, // provide the fields array as a sandboxed variable
           });
-          resource.resourceVal = vm.run(resource.valueFunc);
-          if (resource.valueType === FieldTypes.Integer) {
-            resource.resourceVal = Number(resource.resourceVal);
+          resource.fieldValue = vm.run(resource.valueFunc);
+          if (resource.field_type_id === FieldTypes.Integer) {
+            resource.fieldValue = Number(resource.fieldValue);
           }
           updated = true;
         } catch (e) {
           console.error(e);
-          return colValues.map(resource => ({...resource, resourceVal: null}));
+          return fields.map(resource => ({...resource, fieldValue: null}));
         }
       }
     }
-    return colValues;
+    return fields;
   }
 
 app.post('/evaluate-resource', (req, res) => {
