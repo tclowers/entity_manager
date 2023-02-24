@@ -40,6 +40,77 @@ app.post('/evaluate', (req, res) => {
     }
 });
 
+// move this
+export enum FieldClasses {
+    Required = '2ea5efde-5ab1-456b-9ad8-8fc7132b8079',
+    Optional = '3525ab51-31ce-4b6e-ad8c-422ab11c8a5d',
+    Derived = 'b34ead69-dd7e-4006-9f5d-5b093e658e3f',
+}
+
+// move this
+export enum FieldTypes {
+    Integer = '227cc35c-a475-45ad-95d5-b998b25b17b6',
+    String = '5e0cfb65-7cda-494c-844a-87bb922535da',
+    Entity = 'd016d367-8e3a-40f5-a8c0-813787496f30',
+}
+
+interface ResourceField {
+    name: string;
+    resourceVal: any | null;
+    valueFunc: string | null;
+    valueType: FieldTypes.String | FieldTypes.Integer;
+    resourceClass: FieldClasses.Required | FieldClasses.Optional | FieldClasses.Derived;
+}
+
+function evaluateResource(colValues: ResourceField[]): ResourceField[] {
+    console.log("evaluating colValues: %s", colValues);
+    let updated = true;
+    while (updated) {
+      updated = false;
+
+      for (let i = 0; i < colValues.length; i++) {
+        if (colValues[i].resourceVal !== null || colValues[i].valueFunc === null || colValues[i].resourceClass !== FieldClasses.Derived) {
+          continue;
+        }
+
+        const resourceVars = colValues.reduce((obj, resource) => {
+            if (resource.resourceVal !== null) {
+              obj[resource.name] = resource.resourceVal;
+            }
+            return obj;
+          }, {} as { [key: string]: any });
+          
+        try {
+            console.log("evaluating field: %s", colValues[i])
+          let resource = colValues[i];
+          let vm = new VM({
+            timeout: 1000, // set a timeout for script execution
+            sandbox: { ...resourceVars }, // provide the colValues array as a sandboxed variable
+          });
+          resource.resourceVal = vm.run(resource.valueFunc);
+          if (resource.valueType === FieldTypes.Integer) {
+            resource.resourceVal = Number(resource.resourceVal);
+          }
+          updated = true;
+        } catch (e) {
+          console.error(e);
+          return colValues.map(resource => ({...resource, resourceVal: null}));
+        }
+      }
+    }
+    return colValues;
+  }
+
+app.post('/evaluate-resource', (req, res) => {
+    try {
+        const result = evaluateResource(req.body.resource);
+        res.json({ result });
+    } catch (error:any) {
+        res.status(400).json({ error: error.message });
+    }
+});
+  
+
 app.listen(port, () => {
   console.log(`Logic Engine running on http://localhost:${port}`);
 });

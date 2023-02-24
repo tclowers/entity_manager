@@ -1,4 +1,4 @@
-import { EntityField } from '/models/entity-field';
+import { EntityField } from './entity-field';
 
 export type Entity = {
     id?: string,
