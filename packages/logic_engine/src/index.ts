@@ -13,14 +13,6 @@ app.get('/', (req, res) => {
 
 const port = process.env.PORT || 5000;
 
-const vmSandbox = {
-    console: {
-        log: (message: string) => {
-        console.log(message);
-        }
-    }
-};
-
 function evaluateCode(code: string) {
     const vm = new VM({
         timeout: 1000,
@@ -55,20 +47,21 @@ export enum FieldTypes {
 }
 
 interface ResourceField {
+    id: string;
     name: string;
     fieldValue: any | null;
-    valueFunc: string | null;
+    value_function: string | null;
     field_type_id: FieldTypes.String | FieldTypes.Integer;
     field_class_id: FieldClasses.Required | FieldClasses.Optional | FieldClasses.Derived;
 }
 
-function evaluateResource(fields: ResourceField[]): ResourceField[] {
+function evaluateResource(fields: ResourceField[]): {[key: string]: any} {
     let updated = true;
     while (updated) {
       updated = false;
 
       for (let i = 0; i < fields.length; i++) {
-        if (fields[i].fieldValue !== null || fields[i].valueFunc === null || fields[i].field_class_id !== FieldClasses.Derived) {
+        if (fields[i].fieldValue !== null || fields[i].value_function === null || fields[i].field_class_id !== FieldClasses.Derived) {
           continue;
         }
 
@@ -85,7 +78,7 @@ function evaluateResource(fields: ResourceField[]): ResourceField[] {
             timeout: 1000, // set a timeout for script execution
             sandbox: { ...resourceVars }, // provide the fields array as a sandboxed variable
           });
-          resource.fieldValue = vm.run(resource.valueFunc);
+          resource.fieldValue = vm.run(resource.value_function);
           if (resource.field_type_id === FieldTypes.Integer) {
             resource.fieldValue = Number(resource.fieldValue);
           }
@@ -96,7 +89,13 @@ function evaluateResource(fields: ResourceField[]): ResourceField[] {
         }
       }
     }
-    return fields;
+
+    const field_values = fields.reduce((obj, {id, fieldValue}: ResourceField) => {
+        obj[id] = fieldValue;
+        return obj;
+      }, {} as {[key: string]: any});
+      
+    return field_values;
   }
 
 app.post('/evaluate-resource', (req, res) => {

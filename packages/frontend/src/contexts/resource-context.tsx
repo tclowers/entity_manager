@@ -5,7 +5,7 @@ import { Resource } from '../models/resource';
 const initialState:Resource = {
     id: '',
     name: '',
-    fields: [],
+    fields: {},
 }
 
 // const addField = (Entity: EntityField[]) => {

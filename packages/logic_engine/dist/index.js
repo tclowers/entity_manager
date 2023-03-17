@@ -14,13 +14,6 @@ app.get('/', (req, res) => {
     res.send('Hello, Logic World!');
 });
 const port = process.env.PORT || 5000;
-const vmSandbox = {
-    console: {
-        log: (message) => {
-            console.log(message);
-        }
-    }
-};
 function evaluateCode(code) {
     const vm = new VM({
         timeout: 1000,
@@ -58,7 +51,7 @@ function evaluateResource(fields) {
     while (updated) {
         updated = false;
         for (let i = 0; i < fields.length; i++) {
-            if (fields[i].fieldValue !== null || fields[i].valueFunc === null || fields[i].field_class_id !== FieldClasses.Derived) {
+            if (fields[i].fieldValue !== null || fields[i].value_function === null || fields[i].field_class_id !== FieldClasses.Derived) {
                 continue;
             }
             const resourceVars = fields.reduce((obj, resource) => {
@@ -73,7 +66,7 @@ function evaluateResource(fields) {
                     timeout: 1000,
                     sandbox: Object.assign({}, resourceVars), // provide the fields array as a sandboxed variable
                 });
-                resource.fieldValue = vm.run(resource.valueFunc);
+                resource.fieldValue = vm.run(resource.value_function);
                 if (resource.field_type_id === FieldTypes.Integer) {
                     resource.fieldValue = Number(resource.fieldValue);
                 }
@@ -85,7 +78,11 @@ function evaluateResource(fields) {
             }
         }
     }
-    return fields;
+    const field_values = fields.reduce((obj, { id, fieldValue }) => {
+        obj[id] = fieldValue;
+        return obj;
+    }, {});
+    return field_values;
 }
 app.post('/evaluate-resource', (req, res) => {
     try {

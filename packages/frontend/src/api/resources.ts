@@ -6,11 +6,13 @@ import axios from 'axios';
 const getRoute = (action: ApiAction, id?: string) => {
     switch (action) {
       case ApiAction.List:
-        return apiRoute('/resource');
+        return apiRoute('/resources');
       case ApiAction.Read:
-        return apiRoute('/resource/' + id);
+        return apiRoute('/resources/' + id);
+      case ApiAction.Create:
+        return apiRoute('/resources/' + id);
       default:
-        return apiRoute('/resource');
+        return apiRoute('/resources');
     }
   };
   
@@ -23,7 +25,7 @@ const getRoute = (action: ApiAction, id?: string) => {
 export const createResource = async (resource: Resource) => {
     console.log("creating resource: ", resource);
     const res = await axios({
-      url: getRoute(ApiAction.Create),
+      url: getRoute(ApiAction.Create, resource.id),
       method: 'post',
       data: resource
     });

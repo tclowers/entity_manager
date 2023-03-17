@@ -1,5 +1,5 @@
 export type Resource = {
     id?: string,
     name: string,
-    fields: any[]
+    fields: any[string]
 }
