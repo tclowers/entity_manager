@@ -3,16 +3,18 @@ import { apiRoute, ApiAction } from './common';
 import { Resource } from '../models/resource';
 import axios from 'axios';
 
-const getRoute = (action: ApiAction, id?: string) => {
+const getRoute = (action: ApiAction, entityId: string, resourceId?: string) => {
     switch (action) {
       case ApiAction.List:
-        return apiRoute('/resources');
+        return apiRoute('/entities/' + entityId + '/resources');
       case ApiAction.Read:
-        return apiRoute('/resources/' + id);
+        return apiRoute('/entities/' + entityId + '/resources/' + resourceId);
       case ApiAction.Create:
-        return apiRoute('/resources/' + id);
+        return apiRoute('/entities/' + entityId + '/resources');
+      case ApiAction.Update:
+        return apiRoute('/entities/' + entityId + '/resources/' + resourceId);
       default:
-        return apiRoute('/resources');
+        return apiRoute('/entities' + entityId + '/resources');
     }
   };
   
@@ -25,7 +27,7 @@ const getRoute = (action: ApiAction, id?: string) => {
 export const createResource = async (resource: Resource) => {
     console.log("creating resource: ", resource);
     const res = await axios({
-      url: getRoute(ApiAction.Create, resource.id),
+      url: getRoute(ApiAction.Create, String(resource.id)),
       method: 'post',
       data: resource
     });

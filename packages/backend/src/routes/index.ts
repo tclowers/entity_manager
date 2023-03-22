@@ -19,5 +19,6 @@ router.put('/entities/:entityId', entities.update);
 router.delete('/entities/:entityId', entities.destroy);
 router.get('/field-types-options', fieldTypes.options);
 router.get('/field-classes-options', fieldClasses.options);
-router.post('/resources/:entityID', resources.create)
+router.post('/entities/:entityId/resources', resources.create);
+router.get('/entities/:entityId/resources/:resourceId', resources.fetch);
 

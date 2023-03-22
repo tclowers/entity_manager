@@ -12,6 +12,7 @@ import {
 } from '/providers/entity';
 import { 
     create as createResource,
+    fetch as fetchResource,
 } from '/providers/resource';
 import { evaluateResource } from '/api/logic-engine';
 
@@ -31,10 +32,10 @@ const mergeResourceFields = ({fields: entityFields}: Entity, { fields: resourceF
 
 
 export const create = async (req: Request, res: Response) => {
-    const entityID = req.params.entityID;
+    const entityId = req.params.entityId;
     const resource = req.body;
 
-    const entity = await fetchEntity(entityID);
+    const entity = await fetchEntity(entityId);
 
     const resourceFields = mergeResourceFields(entity, resource);
 
@@ -45,12 +46,15 @@ export const create = async (req: Request, res: Response) => {
     res.send(payload);
 };
 
-// export const fetch = async (req: Request, res: Response) => {
-//     const entityId = req.params.entityId;
-//     const result = await fetchEntity(entityId);
-//     const payload = JSON.stringify(result);
-//     res.send(payload);
-// };
+export const fetch = async (req: Request, res: Response) => {
+    const entityId = req.params.entityId;
+    const resourceId = req.params.resourceId;
+
+    const entity = await fetchEntity(entityId);
+    const result = await fetchResource(entity, resourceId);
+    const payload = JSON.stringify(result);
+    res.send(payload);
+};
 
 // export const list = async (req: Request, res: Response) => {
 //     const result = await listEntities();

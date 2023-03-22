@@ -6,13 +6,12 @@ import { Resource } from '/models/resource';
 
 const placeholder = (n: number) => "$" + String(n);
 
-// export async function create({ fields, table_name }:Entity, { fields: resourceFields }:Resource) {
 export async function create({ fields, table_name }:Entity, resourceFields:any[string]) {
-    const resourceID = uuidv4();
+    const resourceId = uuidv4();
     const insert_resource_header = `INSERT INTO ${table_name} `;
 
     let columns:any[] = ["id"];
-    let values:any[] = [resourceID];
+    let values:any[] = [resourceId];
     let columnNames:any[string] = [];
     
     fields.forEach(({id, column_name}:EntityField) => {
@@ -37,9 +36,20 @@ export async function create({ fields, table_name }:Entity, resourceFields:any[s
     console.log("\n\n insert_resource_code: %s\n\n", insert_resource_code);
 
     const result = await query(insert_resource_code, values);
+    console.log("insert resource result: %s", result);
   
     const resultRows: number = +result.rows
   
-    return { "rows": resultRows };
+    return { "resourceId": resourceId };
 }
 
+export async function fetch({ table_name }:Entity, id: string) {
+    const sql_code = `
+        SELECT *
+        FROM ${table_name}
+        WHERE ${table_name}.id=$1
+    `;
+    const results = await query(sql_code, [id]);
+
+    return results?.rows[0];
+}
