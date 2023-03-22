@@ -56,14 +56,22 @@ interface ResourceField {
 }
 
 function evaluateResource(fields: ResourceField[]): {[key: string]: any} {
+    console.log("evaluating resource: %s\n", fields);
     let updated = true;
     while (updated) {
       updated = false;
 
       for (let i = 0; i < fields.length; i++) {
-        if (fields[i].fieldValue !== null || fields[i].value_function === null || fields[i].field_class_id !== FieldClasses.Derived) {
-          continue;
+        if (fields[i].field_type_id === FieldTypes.Integer) {
+          if ( (fields[i].fieldValue !== null && fields[i].fieldValue !== undefined && !isNaN(fields[i].fieldValue) ) || fields[i].value_function === null || fields[i].field_class_id !== FieldClasses.Derived) {
+            continue;
+          }
+        } else {
+          if ( (fields[i].fieldValue !== null && fields[i].fieldValue !== undefined ) || fields[i].value_function === null || fields[i].field_class_id !== FieldClasses.Derived)  {
+            continue;
+          }
         }
+
 
         const resourceVars = fields.reduce((obj, resource) => {
             if (resource.fieldValue !== null) {

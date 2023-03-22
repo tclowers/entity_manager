@@ -1,31 +1,28 @@
 import { Request, Response } from 'express';
 import { FieldClass } from '/models/field-class';
 import { FieldType } from '/models/field-type';
+import { FieldTypes } from '/constants/field-types';
+import { FieldClasses } from '/constants/field-classes';
 import { Resource } from '/models/resource';
+import { ResourceField } from '/models/resource-field';
 import { Entity } from '/models/entity';
 import { EntityField } from '/models/entity-field';
 import { 
     fetch as fetchEntity,
 } from '/providers/entity';
-
 import { 
     create as createResource,
 } from '/providers/resource';
+import { evaluateResource } from '/api/logic-engine';
 
-type ResourceField = {
-    id?: string;
-    name: string;
-    fieldValue: any;
-    value_function: string;
-    field_type_id?: string;
-    field_class_id?: string;
-}
 
 const mergeResourceFields = ({fields: entityFields}: Entity, { fields: resourceFields }: Resource)  => {
     return entityFields.map( (field: EntityField) => {
-        const fValue = resourceFields[ String(field.id) ];
+        const fValue = field.field_type_id == FieldTypes.Integer && field.field_class_id != FieldClasses.Derived ? Number(resourceFields[ String(field.id) ])  : resourceFields[ String(field.id) ];
+
         const rField: ResourceField = {
             ...field,
+            value_function: field.value_function.replace(/^'|'$/g, ''),
             fieldValue: fValue
         }
         return rField;
@@ -36,15 +33,14 @@ const mergeResourceFields = ({fields: entityFields}: Entity, { fields: resourceF
 export const create = async (req: Request, res: Response) => {
     const entityID = req.params.entityID;
     const resource = req.body;
-    console.log("creating resource: ", resource);
-    console.log("creating resource with fields: ", resource.fields);
+
     const entity = await fetchEntity(entityID);
 
     const resourceFields = mergeResourceFields(entity, resource);
-    console.log("resourceFields: %", resourceFields);
 
+    const evaluatedFields = await evaluateResource(resourceFields);
 
-    const result = await createResource(entity, resource);
+    const result = await createResource(entity, evaluatedFields.result);
     const payload = JSON.stringify(result);
     res.send(payload);
 };

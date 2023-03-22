@@ -29,6 +29,6 @@ export const createResource = async (resource: Resource) => {
       method: 'post',
       data: resource
     });
-    // return await res.json();
-    return true;
+     
+    return res.data;
   }

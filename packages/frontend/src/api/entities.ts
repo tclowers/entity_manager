@@ -27,6 +27,5 @@ export const createEntity = async (entity: Entity) => {
     method: 'post',
     data: entity
   });
-  // return await res.json();
-  return true;
+  return res.data;
 }

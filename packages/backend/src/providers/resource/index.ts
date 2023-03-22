@@ -6,7 +6,8 @@ import { Resource } from '/models/resource';
 
 const placeholder = (n: number) => "$" + String(n);
 
-export async function create({ fields, table_name }:Entity, { fields: resourceFields }:Resource) {
+// export async function create({ fields, table_name }:Entity, { fields: resourceFields }:Resource) {
+export async function create({ fields, table_name }:Entity, resourceFields:any[string]) {
     const resourceID = uuidv4();
     const insert_resource_header = `INSERT INTO ${table_name} `;
 
@@ -40,5 +41,5 @@ export async function create({ fields, table_name }:Entity, { fields: resourceFi
     const resultRows: number = +result.rows
   
     return { "rows": resultRows };
-  }
+}
 

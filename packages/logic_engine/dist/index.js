@@ -47,12 +47,20 @@ var FieldTypes;
     FieldTypes["Entity"] = "d016d367-8e3a-40f5-a8c0-813787496f30";
 })(FieldTypes = exports.FieldTypes || (exports.FieldTypes = {}));
 function evaluateResource(fields) {
+    console.log("evaluating resource: %s\n", fields);
     let updated = true;
     while (updated) {
         updated = false;
         for (let i = 0; i < fields.length; i++) {
-            if (fields[i].fieldValue !== null || fields[i].value_function === null || fields[i].field_class_id !== FieldClasses.Derived) {
-                continue;
+            if (fields[i].field_type_id === FieldTypes.Integer) {
+                if ((fields[i].fieldValue !== null && fields[i].fieldValue !== undefined && !isNaN(fields[i].fieldValue)) || fields[i].value_function === null || fields[i].field_class_id !== FieldClasses.Derived) {
+                    continue;
+                }
+            }
+            else {
+                if ((fields[i].fieldValue !== null && fields[i].fieldValue !== undefined) || fields[i].value_function === null || fields[i].field_class_id !== FieldClasses.Derived) {
+                    continue;
+                }
             }
             const resourceVars = fields.reduce((obj, resource) => {
                 if (resource.fieldValue !== null) {
