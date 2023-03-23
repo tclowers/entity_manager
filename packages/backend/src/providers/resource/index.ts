@@ -36,7 +36,6 @@ export async function create({ fields, table_name }:Entity, resourceFields:any[s
     console.log("\n\n insert_resource_code: %s\n\n", insert_resource_code);
 
     const result = await query(insert_resource_code, values);
-    console.log("insert resource result: %s", result);
   
     const resultRows: number = +result.rows
   
@@ -44,6 +43,9 @@ export async function create({ fields, table_name }:Entity, resourceFields:any[s
 }
 
 export async function fetch({ table_name }:Entity, id: string) {
+    // This code should get more complicated when views/faces are introduced
+    // faces will be preset templates for displaying resources and
+    // nesting certain objects
     const sql_code = `
         SELECT *
         FROM ${table_name}
@@ -52,4 +54,49 @@ export async function fetch({ table_name }:Entity, id: string) {
     const results = await query(sql_code, [id]);
 
     return results?.rows[0];
+}
+
+export async function list({ table_name }:Entity) {
+    const sql_code = `
+        SELECT
+            t.*
+        FROM ${table_name} t
+        ORDER by t.id
+    `;
+    const results = await query(sql_code,[]);
+  
+    return results?.rows;
+}
+
+export async function update({ fields, table_name }:Entity, id: string, resourceFields:any[string]) {
+    const update_resource_header = `UPDATE ${table_name} SET `;
+
+    let columns:any[] = [];
+    let values:any[] = [];
+    let columnNames:any[string] = [];
+    
+    fields.forEach(({id, column_name}:EntityField) => {
+        columnNames[String(id)] = column_name; // set column name
+    })
+
+    let fieldIndex = 1;
+
+    for (const key in resourceFields) {
+        columns.push(columnNames[key] + " = " + placeholder(fieldIndex));
+        values.push(resourceFields[key]);
+        fieldIndex++;
+    }
+
+    const update_resource_columns = columns.join(",");
+    const update_resource_where = " WHERE id = " + placeholder(fieldIndex);
+    values.push(id);
+
+    const update_resource_code = update_resource_header + update_resource_columns + update_resource_where;
+    console.log("\n\n update_resource_code: %s\n\n", update_resource_code);
+
+    const result = await query(update_resource_code, values);
+  
+    const resultRows: number = +result.rows
+  
+    return { "resourceId": id };
 }

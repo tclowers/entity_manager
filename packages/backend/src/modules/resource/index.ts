@@ -12,6 +12,7 @@ import {
 } from '/providers/entity';
 import { 
     create as createResource,
+    list as listResources,
     fetch as fetchResource,
 } from '/providers/resource';
 import { evaluateResource } from '/api/logic-engine';
@@ -56,11 +57,14 @@ export const fetch = async (req: Request, res: Response) => {
     res.send(payload);
 };
 
-// export const list = async (req: Request, res: Response) => {
-//     const result = await listEntities();
-//     const payload = JSON.stringify(result);
-//     res.send(payload);
-// };
+export const list = async (req: Request, res: Response) => {
+    const entityId = req.params.entityId;
+    const entity = await fetchEntity(entityId);
+
+    const result = await listResources(entity);
+    const payload = JSON.stringify(result);
+    res.send(payload);
+};
 
 // export const destroy = async (req: Request, res: Response) => {
 //     const entityId = req.params.entityId;

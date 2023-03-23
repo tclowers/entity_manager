@@ -21,4 +21,5 @@ router.get('/field-types-options', fieldTypes.options);
 router.get('/field-classes-options', fieldClasses.options);
 router.post('/entities/:entityId/resources', resources.create);
 router.get('/entities/:entityId/resources/:resourceId', resources.fetch);
+router.get('/entities/:entityId/resources', resources.list);
 
