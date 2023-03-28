@@ -91,12 +91,22 @@ export async function update({ fields, table_name }:Entity, id: string, resource
     const update_resource_where = " WHERE id = " + placeholder(fieldIndex);
     values.push(id);
 
-    const update_resource_code = update_resource_header + update_resource_columns + update_resource_where;
-    console.log("\n\n update_resource_code: %s\n\n", update_resource_code);
+    const update_resource_sql = update_resource_header + update_resource_columns + update_resource_where;
+    console.log("\n\n update_resource_sql: %s\n\n", update_resource_sql);
 
-    const result = await query(update_resource_code, values);
+    const result = await query(update_resource_sql, values);
   
     const resultRows: number = +result.rows
   
     return { "resourceId": id };
+}
+
+export async function destroy ({ table_name }:Entity, resourceId: string) {
+    const sql_code = `
+        DELETE FROM ${table_name}
+        WHERE id=$1
+    `;
+    const results = await query(sql_code, [resourceId]);
+
+    return results?.rows[0];
 }

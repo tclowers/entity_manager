@@ -14,6 +14,8 @@ import {
     create as createResource,
     list as listResources,
     fetch as fetchResource,
+    update as updateResource,
+    destroy as destroyResource,
 } from '/providers/resource';
 import { evaluateResource } from '/api/logic-engine';
 
@@ -66,18 +68,27 @@ export const list = async (req: Request, res: Response) => {
     res.send(payload);
 };
 
-// export const destroy = async (req: Request, res: Response) => {
-//     const entityId = req.params.entityId;
-//     const result = await destroyEntity(entityId);
-//     const payload = JSON.stringify(result);
-//     res.send(payload);
-// };
-  
+export const destroy = async (req: Request, res: Response) => {
+    const entityId = req.params.entityId;
+    const resourceId = req.params.resourceId;
+    const entity = await fetchEntity(entityId);
+    const result = await destroyResource(entity, resourceId);
+    const payload = JSON.stringify(result);
+    res.send(payload);
+};
 
-// export const update = async (req: Request, res: Response) => {
-//     const entityId = req.params.entityId;
-//     const entity = req.body;
-//     const result = await updateEntity(entityId, entity);
-//     const payload = JSON.stringify(result);
-//     res.send(payload);
-// };
+export const update = async (req: Request, res: Response) => {
+    const entityId = req.params.entityId;
+    const resourceId = req.params.resourceId;
+    const resource = req.body;
+
+    const entity = await fetchEntity(entityId);
+
+    const resourceFields = mergeResourceFields(entity, resource);
+
+    const evaluatedFields = await evaluateResource(resourceFields);
+
+    const result = await updateResource(entity, resourceId, evaluatedFields.result);
+    const payload = JSON.stringify(result);
+    res.send(payload);
+}
