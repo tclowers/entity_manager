@@ -10,7 +10,7 @@ import { Spinner } from '../atoms/spinner';
 import { FieldTypes } from '../../constants/field_types';
 import { FieldClasses } from '../../constants/field_classes';
 import { createResource } from '../../api/resources';
-
+import { useNavigate } from 'react-router-dom';
 
 
 const Container = styled.div`
@@ -60,14 +60,14 @@ const FieldLabel = styled.span`
 `;
 
 export interface Props {
-  entityID: string;
+  entityId: string;
 }
 
 
-export function CreateResource({ entityID }: Props) {
-  // const entityID = '42f9856c-dcff-4c41-a0ef-28190b403110';
+export function CreateResource({ entityId }: Props) {
+  // const entityId = '42f9856c-dcff-4c41-a0ef-28190b403110';
 
-  const [{ data, loading, error }, refetch] = useEntities(ApiAction.Read, entityID);
+  const [{ data, loading, error }, refetch] = useEntities(ApiAction.Read, entityId);
   const { state, dispatch } = useResourceContext();
 
   useEffect(() => {
@@ -77,9 +77,12 @@ export function CreateResource({ entityID }: Props) {
     }
   }, [data]);
 
-  const saveResource = (event:any) => {
+  const navigate = useNavigate();
+
+  const saveResource = async (event:any) => {
     console.log("saving resource: ", state);
-    createResource(state);
+    await createResource(state);
+    navigate('/resource/' + entityId + '/list');
   };
 
   if (loading) return <Spinner />;

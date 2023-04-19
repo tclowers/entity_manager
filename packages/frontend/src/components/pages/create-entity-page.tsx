@@ -1,7 +1,7 @@
 import React from 'react';
+import { CreateEntity } from '../organisms/create-entity';
 import styled from 'styled-components';
 import EntityProvider from '../../contexts/entity-context';
-import { EntityList } from '../organisms/entity-list';
 import { useParams } from 'react-router-dom';
 
 
@@ -17,13 +17,11 @@ const Container = styled.div`
   color: white;
 `;
 
-export function EntityPage() {
-  const { action, entityId } = useParams();
-
+export function CreateEntityPage() {
   return (
     <EntityProvider>
       <Container>
-        {typeof action === "undefined" && <EntityList />}
+        <CreateEntity />
       </Container>
     </EntityProvider>
   );

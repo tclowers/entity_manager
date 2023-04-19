@@ -42,7 +42,7 @@ const SubTitle = styled.h2`
   color: black;
 `;
 
-export function Entity() {
+export function CreateEntity() {
 
   const { state, dispatch } = useEntityContext();
 

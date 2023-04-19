@@ -18,9 +18,9 @@ const getRoute = (action: ApiAction, entityId: string, resourceId?: string) => {
     }
   };
   
-  export const useResources = (action = ApiAction.List, id = '') => {
+  export const useResources = (action = ApiAction.List, entityId = '', resourceId = '') => {
     let options = {};
-    const route = getRoute(action, id);
+    const route = resourceId !== '' ? getRoute(action, entityId, resourceId) : getRoute(action, entityId);
     return useAxios(route);
   };
 

@@ -42,7 +42,7 @@ export async function create({ fields, table_name }:Entity, resourceFields:any[s
     return { "resourceId": resourceId };
 }
 
-export async function fetch({ table_name }:Entity, id: string) {
+export async function fetch({ table_name, name }:Entity, id: string) {
     // This code should get more complicated when views/faces are introduced
     // faces will be preset templates for displaying resources and
     // nesting certain objects
@@ -53,10 +53,10 @@ export async function fetch({ table_name }:Entity, id: string) {
     `;
     const results = await query(sql_code, [id]);
 
-    return results?.rows[0];
+    return { entity_name: name, resource: results?.rows[0] };
 }
 
-export async function list({ table_name }:Entity) {
+export async function list({ table_name, name }:Entity) {
     const sql_code = `
         SELECT
             t.*
@@ -65,7 +65,7 @@ export async function list({ table_name }:Entity) {
     `;
     const results = await query(sql_code,[]);
   
-    return results?.rows;
+    return { entity_name: name, resources: results?.rows };
 }
 
 export async function update({ fields, table_name }:Entity, id: string, resourceFields:any[string]) {
