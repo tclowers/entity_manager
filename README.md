@@ -1,2 +1,2 @@
 # entity_manager
-A clean ReactJS, NodeJS, ExpressJS full stack TypeScript scaffold for web applications
+Low-code data management platform written in ReactJS, NodeJS, ExpressJS, TypeScript 
